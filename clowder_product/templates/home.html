@@ -1,0 +1,365 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Clowder</title>
+
+    <link rel="icon" type="image/png" href="{% static "img/favicon.png" %}">
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{% static "css/stylish-portfolio.css" %}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="{% static "font-awesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- Highlight JS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/tomorrow.min.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="../" class="navbar-brand"><img height="50px" src="{% static "img/logo.png" %}" /></a>
+        </div>
+        <nav class="collapse navbar-collapse bs-navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active">
+              <a href="../getting-started/">Getting started</a>
+            </li>
+            <li>
+              <a href="../css/">Download</a>
+            </li>
+            <li>
+              <a href="../components/">Documentation</a>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="http://expo.getbootstrap.com" onclick="ga('send', 'event', 'Navbar', 'Community links', 'Expo');">Sign Up</a></li>
+            <li><a href="http://blog.getbootstrap.com" onclick="ga('send', 'event', 'Navbar', 'Community links', 'Blog');">Sign In</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- About -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="row">
+              <div class="col-md-6">
+                <h2>You have a script you need to run monthly.</h2>
+                <p class="lead">Just add ~1 line of code to the bottom of your script.</p>
+                <pre class="text-left">
+
+<a>Python</a> - <a>Node</a> - <a>Ruby</a> - <a>PHP</a>
+
+<code class="python">import clowder
+import datetime
+
+clowder.Watch(
+    name='Monthly Job',
+    schedule=datetime.timedelta(days=31),
+).ok()
+</code>
+                </pre>
+              </div>
+              <div class="col-md-6">
+                <h2>You want an alert when CPU usage goes over 60%.</h2>
+                <p class="lead">Just add ~1 line of code to the bottom of your script.</p>
+                <pre class="text-left">
+
+<a>Python</a> - <a>Node</a> - <a>Ruby</a> - <a>PHP</a>
+
+<code class="python">import clowder
+import psutil
+
+cpu_percentage = psutil.cpu_percent()
+
+clowder.Watch(
+    name='CPU Percentage',
+    alert=lambda x: x >= 60
+).submit(cpu_percentage)
+</code>
+                </pre>
+              </div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
+
+
+    <!-- Services -->
+    <!-- The circle icons use Font Awesome's stacked icon classes. For more information, visit http://fontawesome.io/examples/ -->
+    <section id="services" class="services bg-primary">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-lg-10 col-lg-offset-1">
+                    <h2>Our Services</h2>
+                    <hr class="small">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-cloud fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>Open Source</strong>
+                                </h4>
+                                <p>An open source framework built on open source tools.</p>
+
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-compass fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>Push Monitoring</strong>
+                                </h4>
+                                <p>Monitoring work is done by the clients.</p>
+
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-flask fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>Simple HTTP Rest</strong>
+                                </h4>
+                                <p>JSON updates over simple HTTP Rest APIs.</p>
+
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-shield fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>Hosted Option</strong>
+                                </h4>
+                                <p>Host it yourself our use or free hosted version.</p>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.row (nested) -->
+
+                    <div class="col-lg-12 text-center">
+                        <a href="#" class="btn btn-lg btn-light">Sign Up</a>
+                        <a href="#" class="btn btn-lg btn-dark">Download</a>
+                    </div>
+
+                </div>
+                <!-- /.col-lg-10 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
+
+    <!-- Portfolio -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1 text-center">
+                    <h2>Compare us to..</h2>
+                    <div class="row">
+                        <table class="table">
+                            <tr>
+                                <th></th>
+                                <th>Clowder</th>
+                                <th>Nagios</th>
+                                <th>Cloudfront</th>
+                                <th>Pingdom</th>
+                                <th>New Relic</th>
+                                <th>Cronitor</th>
+                            </tr>
+                            <tr>
+                                <th>Track Website Response Time</th>
+                                <th>Yes</th>
+                                <th>No*</th>
+                                <th>No</th>
+                                <th>Yes</th>
+                                <th>Yes</th>
+                                <th>Yes</th>
+                            </tr>
+                            <tr>
+                                <th>Monitor Cron Jobs</th>
+                                <th>Yes</th>
+                                <th>Yes</th>
+                                <th>No</th>
+                                <th>No</th>
+                                <th>No</th>
+                                <th>Yes</th>
+                            </tr>
+                            <tr>
+                                <th>Operations (Message Queues, etc.)</th>
+                                <th>Yes</th>
+                                <th>No</th>
+                                <th>No</th>
+                                <th>No</th>
+                                <th>No</th>
+                                <th>No</th>
+                            </tr>
+                            <tr>
+                                <th>CPU and Memory</th>
+                                <th>Yes</th>
+                                <th>Yes</th>
+                                <th>Yes</th>
+                                <th>No</th>
+                                <th>No</th>
+                                <th>No</th>
+                            </tr>
+                            <tr>
+                                <th>Works on EC2, Rackspace, or DigitalOcean</th>
+                                <th>Yes</th>
+                                <th>Yes</th>
+                                <th>No</th>
+                                <th>Yes</th>
+                                <th>Yes</th>
+                                <th>Yes</th>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.col-lg-10 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
+
+    <!-- Call to Action -->
+    <aside class="call-to-action bg-primary">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h3>The buttons below are impossible to resist.</h3>
+                    <a href="#" class="btn btn-lg btn-light">Sign Up</a>
+                    <a href="#" class="btn btn-lg btn-dark">Download</a>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1 text-center">
+                    <h4><strong>Clowder</strong>
+                    </h4>
+                    <p>3481 Santa Monica<br>Santa Monica, CA 90210</p>
+                    <!--<ul class="list-unstyled">
+                        <li><i class="fa fa-phone fa-fw"></i> (123) 456-7890</li>
+                        <li><i class="fa fa-envelope-o fa-fw"></i>  <a href="mailto:name@example.com">name@example.com</a>
+                        </li>
+                    </ul>-->
+                    <br>
+                    <ul class="list-inline">
+                        <li>
+                            <a href="#"><i class="fa fa-facebook fa-fw fa-3x"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-twitter fa-fw fa-3x"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-dribbble fa-fw fa-3x"></i></a>
+                        </li>
+                    </ul>
+                    <hr class="small">
+                    <p class="text-muted">Copyright &copy; Clowder 2014</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+    <!-- Highlight -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/languages/python.min.js"></script>
+    <script>
+        $(document).ready(function() {
+          $('pre code').each(function(i, block) {
+            hljs.highlightBlock(block);
+          });
+        });
+    </script>
+
+    <!-- Custom Theme JavaScript -->
+    <script>
+    // Closes the sidebar menu
+    $("#menu-close").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("active");
+    });
+
+    // Opens the sidebar menu
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("active");
+    });
+
+    // Scrolls to the selected menu item on the page
+    $(function() {
+        $('a[href*=#]:not([href=#])').click(function() {
+            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
+
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                if (target.length) {
+                    $('html,body').animate({
+                        scrollTop: target.offset().top
+                    }, 1000);
+                    return false;
+                }
+            }
+        });
+    });
+    </script>
+
+</body>
+
+</html>

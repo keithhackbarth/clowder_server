@@ -1,1 +1,1 @@
-web: gunicorn clowder_server.wsgi --log-file -
+web: gunicorn clowder_product.wsgi --log-file -

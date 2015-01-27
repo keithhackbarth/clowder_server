@@ -1,5 +1,5 @@
 """
-Django settings for clowder_server project.
+Django settings for clowder_product project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.7/topics/settings/
@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'clowder_product',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -48,9 +49,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'clowder_server.urls'
+ROOT_URLCONF = 'clowder_product.urls'
 
-WSGI_APPLICATION = 'clowder_server.wsgi.application'
+WSGI_APPLICATION = 'clowder_product.wsgi.application'
 
 
 # Database
@@ -81,9 +82,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+
 
 ### COPIED FROM HEROKU ###
-
 
 # Parse database configuration from $DATABASE_URL
 import dj_database_url
