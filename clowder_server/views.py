@@ -4,10 +4,14 @@ from django.views.generic import TemplateView, View
 from clowder_server.models import Ping
 
 class APIView(View):
-    def get(self, request):
+    def post(self, request):
+
+        name = request.POST.get('name')
+        value = request.POST.get('value')
 
         Ping.objects.create(
-            name='Test'
+            name=name,
+            value=value,
         )
         return HttpResponse('ok')
 

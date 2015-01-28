@@ -6,6 +6,7 @@ class Alert(models.Model):
 
 class Ping(models.Model):
     name = models.CharField(max_length=200)
+    value = models.IntegerField()
     create = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
