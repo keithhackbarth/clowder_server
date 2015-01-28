@@ -1,9 +1,10 @@
+from braces.views import CsrfExemptMixin
 from django.http import HttpResponse
 from django.views.generic import TemplateView, View
 
 from clowder_server.models import Ping
 
-class APIView(View):
+class APIView(CsrfExemptMixin, View):
     def post(self, request):
 
         name = request.POST.get('name')
