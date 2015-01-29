@@ -1,13 +1,11 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
+from django.core.mail import send_mail
 
 sched = BlockingScheduler()
 
-@sched.scheduled_job('interval', minutes=3)
+@sched.scheduled_job('interval', hours=5)
 def timed_job():
-    print('This job is run every three minutes.')
-
-@sched.scheduled_job('cron', day_of_week='mon-fri', hour=17)
-def scheduled_job():
-    print('This job is run every weekday at 5pm.')
+    send_mail('Subject here', 'Here is the message.', 'admin@clowder.io',
+    ['keith@parkme.com'], fail_silently=False)
 
 sched.start()

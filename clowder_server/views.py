@@ -1,4 +1,6 @@
 from braces.views import CsrfExemptMixin
+
+from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.views.generic import TemplateView, View
 
@@ -9,6 +11,11 @@ class APIView(CsrfExemptMixin, View):
 
         name = request.POST.get('name')
         value = request.POST.get('value')
+        status = int(request.POST.get('status', 1))
+
+        if status == -1:
+            send_mail('Subject here', 'Here is the message.', 'admin@clowder.io',
+            ['keith@parkme.com'], fail_silently=False)
 
         Ping.objects.create(
             name=name,
