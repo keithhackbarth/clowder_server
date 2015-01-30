@@ -28,5 +28,5 @@ class DashboardView(TemplateView):
     template_name = "dashboard.html"
 
     def get_context_data(self, **context):
-        context['pings'] = Ping.objects.all()
+        context['pings'] = Ping.objects.all().order_by(name)
         return context
