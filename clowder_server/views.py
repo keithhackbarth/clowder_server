@@ -20,7 +20,7 @@ class APIView(CsrfExemptMixin, View):
             ['keith@parkme.com'], fail_silently=False)
 
         if frequency:
-            expiration_date = datetime.datetime.now() + int(frequency)
+            expiration_date = datetime.datetime.now() + datetime.timedelta(seconds=int(frequency))
 
             Alert.objects.filter(name=name).delete()
 
