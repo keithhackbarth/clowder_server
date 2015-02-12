@@ -27,6 +27,7 @@ class APIView(CsrfExemptMixin, View):
                 name=name,
                 expire_at=expiration_date
             )
+            return HttpResponse('test')
 
         Ping.objects.create(
             name=name,
