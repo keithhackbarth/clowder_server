@@ -1,4 +1,5 @@
 from braces.views import CsrfExemptMixin
+import datetime
 
 from django.core.mail import send_mail
 from django.http import HttpResponse
@@ -27,7 +28,6 @@ class APIView(CsrfExemptMixin, View):
                 name=name,
                 expire_at=expiration_date
             )
-            return HttpResponse('test')
 
         Ping.objects.create(
             name=name,
