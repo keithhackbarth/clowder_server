@@ -2,3 +2,5 @@ venv
 *.pyc
 db.sqlite3
 staticfiles
+.DS_Store
+.dump

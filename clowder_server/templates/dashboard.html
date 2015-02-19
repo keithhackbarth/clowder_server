@@ -16,7 +16,8 @@
         <ul>
         {% for ping_name in ping_names %}
             <li>
-                {{ ping_name.grouper }}
+                {{ ping_name.grouper }}<br>
+                <b>Passing</b>
                 <script type="text/javascript">
                   google.setOnLoadCallback(drawChart);
                   function drawChart() {
@@ -43,8 +44,6 @@
             </li>
         {% endfor %}
         </ul>
-
-
 
         <br><br><br><br><br><br><br><br>
         {% endblock %}

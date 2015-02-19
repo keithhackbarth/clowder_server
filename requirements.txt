@@ -4,11 +4,14 @@ dj-database-url==0.3.0
 dj-static==0.0.6
 django-braces==1.4.0
 django-heroku-sendgridify==0.1.1
+django-ipware==0.1.0
 django-toolbelt==0.0.1
+greenlet==0.4.5
 gunicorn==19.1.1
 psycopg2==2.5.4
 pytesseract==0.1.5
 pytz==2014.10
+requests==2.5.1
 six==1.9.0
 static3==0.5.1
 tzlocal==1.1.2
