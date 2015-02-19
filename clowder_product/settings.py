@@ -22,6 +22,17 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
+TEMPLATE_CONTEXT_PROCESSORS= (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.core.context_processors.tz',
+    'django.contrib.messages.context_processors.messages',
+    'django.core.context_processors.request'
+)
+
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -83,6 +94,11 @@ STATICFILES_DIRS = (
 )
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+AUTH_USER_MODEL = 'clowder_server.ClowderUser'
+
+LOGIN_REDIRECT_URL = '/dashboard/'
+LOGOUT_URL = '/'
 
 ### COPIED FROM HEROKU ###
 

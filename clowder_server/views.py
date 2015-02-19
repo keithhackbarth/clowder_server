@@ -1,11 +1,13 @@
-from braces.views import CsrfExemptMixin
+from braces.views import CsrfExemptMixin, LoginRequiredMixin
 import datetime
+from ipware.ip import get_real_ip
+import pytz
 
-from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.views.generic import TemplateView, View
 
-from clowder_server.models import Alert, Ping
+from clowder_server.emailer import send_alert
+from clowder_server.models import Alert, ClowderUser, Ping
 
 class APIView(CsrfExemptMixin, View):
     def post(self, request):
@@ -13,32 +15,49 @@ class APIView(CsrfExemptMixin, View):
         name = request.POST.get('name')
         frequency = request.POST.get('frequency')
         value = request.POST.get('value')
+        publisher = request.POST.get('publisher')
         status = int(request.POST.get('status', 1))
 
-        if status == -1:
-            send_mail('Subject here', 'Here is the message.', 'admin@clowder.io',
-            ['keith@parkme.com'], fail_silently=False)
+        user = ClowderUser.objects.get(pk=publisher)
+        ip = get_real_ip(request)
 
-        if frequency:
+        if status == -1:
+            send_alert(request.user, name)
+
+            Alert.objects.create(
+                name=name,
+                user=user,
+                ip_address=ip,
+            )
+
+        elif frequency:
             expiration_date = datetime.datetime.now() + datetime.timedelta(seconds=int(frequency))
 
             Alert.objects.filter(name=name).delete()
 
             Alert.objects.create(
                 name=name,
-                expire_at=expiration_date
+                user=user,
+                notify_at=expiration_date,
+                ip_address=ip,
             )
 
         Ping.objects.create(
             name=name,
+            user=user,
             value=value,
+            ip_address=ip,
         )
         return HttpResponse('ok')
 
-class DashboardView(TemplateView):
+class DashboardView(LoginRequiredMixin, TemplateView):
 
     template_name = "dashboard.html"
 
-    def get_context_data(self, **context):
-        context['pings'] = Ping.objects.all().order_by('name', 'create')
-        return context
+    def _pings(self, user):
+        three_days = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=3)
+        return Ping.objects.filter(user=user, create__gte=three_days).order_by('name', 'create')
+
+    def get(self, request, *args, **kwargs):
+        context = {'pings': self._pings(request.user)}
+        return self.render_to_response(context)

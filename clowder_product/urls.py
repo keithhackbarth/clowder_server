@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 urlpatterns = patterns('',
 
     url(r'^accounts/login/$', 'django.contrib.auth.views.login',
-       {'template_name': 'admin/login.html'}),
+       {'template_name': 'login.html'}),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
 
     url(r'', include('clowder_server.urls')),
