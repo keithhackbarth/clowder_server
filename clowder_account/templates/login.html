@@ -8,12 +8,35 @@
     }
 </style>
 
+<script>
+    $(function () {
+        // Javascript to enable link to tab
+        var url = document.location.toString();
+        if (url.match('#')) {
+            $('.nav-tabs a[href=#'+url.split('#')[1]+']').tab('show') ;
+        }
+
+
+
+        // Change hash for page-reload
+        $('.nav-tabs a').on('shown.bs.tab', function (e) {
+            window.location.hash = e.target.hash;
+        });
+    });
+
+</script>
+
 <div class="container">
 	<div class="row">
         <div class="span12">
     		<div class="" id="loginModal">
               <div class="modal-header">
-              <h3>Have an Account?</h3>
+                <h3>Have an Account?</h3>
+                Clowder is a 100% free offering. You can download the open source library and
+                host yourself or use our free hosted cloud service.<br>
+                All we ask is that you sign up with your email address, so we can
+                contact you about product updates and new releases.
+                <br><br>
               </div>
               <div class="modal-body">
                 <div class="well">
@@ -62,22 +85,27 @@
                       </form>
                     </div>
                     <div class="tab-pane fade" id="create">
-                      <form id="tab">
-                        <label>Username</label>
-                        <input type="text" value="" class="input-xlarge">
-                        <label>First Name</label>
-                        <input type="text" value="" class="input-xlarge">
-                        <label>Last Name</label>
-                        <input type="text" value="" class="input-xlarge">
-                        <label>Email</label>
-                        <input type="text" value="" class="input-xlarge">
-                        <label>Address</label>
-                        <textarea value="Smith" rows="3" class="input-xlarge">
-                        </textarea>
+                      <form id="tab" action="/accounts/register/" method="post">
+                        {% csrf_token %}
+                        {% if next %}
+                            <input type="hidden" name="next" value="{{ next }}" />
+                        {% endif %}
 
-                        <div>
-                          <button class="btn btn-primary">Create Account</button>
-                        </div>
+
+                        <label>First Name</label>
+                        <input name="first_name" type="text" value="" class="input-xlarge">
+                        <label>Last Name</label>
+                        <input name="last_name" type="text" value="" class="input-xlarge">
+                        <label>Email</label>
+                        <input name="email" type="text" value="" class="input-xlarge">
+                        <label>Password</label>
+                        <input name="password" type="password" value="" class="input-xlarge">
+                        <label>Preferred Programming Language</label>
+                        <input name= "language"
+                            type="text" value="" placeholder="Java, C++, Python, Go, etc." class="input-xlarge">
+                        <br><br>
+                        <button class="btn btn-primary">Create Account</button>
+
                       </form>
                     </div>
                 </div>

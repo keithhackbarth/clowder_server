@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'clowder_account',
     'clowder_product',
     'clowder_server',
 )
@@ -95,7 +96,7 @@ STATICFILES_DIRS = (
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
-AUTH_USER_MODEL = 'clowder_server.ClowderUser'
+AUTH_USER_MODEL = 'clowder_account.ClowderUser'
 
 LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_URL = '/'

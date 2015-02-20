@@ -6,8 +6,9 @@ import pytz
 from django.http import HttpResponse
 from django.views.generic import TemplateView, View
 
+from clowder_account.models import ClowderUser
 from clowder_server.emailer import send_alert
-from clowder_server.models import Alert, ClowderUser, Ping
+from clowder_server.models import Alert, Ping
 
 class APIView(CsrfExemptMixin, View):
     def post(self, request):

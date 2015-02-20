@@ -3,4 +3,4 @@ venv
 db.sqlite3
 staticfiles
 .DS_Store
-.dump
+*.dump

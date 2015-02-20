@@ -1,5 +1,5 @@
 APScheduler==3.0.1
-Django==1.7.4
+https://www.djangoproject.com/download/1.8a1/tarball/
 dj-database-url==0.3.0
 dj-static==0.0.6
 django-braces==1.4.0

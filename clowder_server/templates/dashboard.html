@@ -42,6 +42,12 @@
 
                 <div id="chart_div_{{forloop.counter}}" style="width: 900px; height: 500px;"></div>
             </li>
+
+
+        {% empty %}
+
+            You can no alerts yet. Please refer to the documentation on how to get started.
+
         {% endfor %}
         </ul>
 
