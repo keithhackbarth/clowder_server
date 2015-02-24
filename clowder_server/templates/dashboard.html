@@ -11,7 +11,7 @@
 
 <div class="container">
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-8">
 
         <ul>
         {% for ping_name in ping_names %}
@@ -47,6 +47,22 @@
         {% empty %}
 
             You can no alerts yet. Please refer to the documentation on how to get started.
+            <br><br>
+
+            API Key: <b>{{user.public_key}}</b><br><br>
+            pip install https://github.com/keithhackbarth/clowder_python_client/archive/master.zip<br><br>
+
+<pre><code>import clowder
+import psutil
+
+clowder.api_key = '{{user.public_key}}'
+
+clowder.ok({
+   'name': 'Memory Utilization',
+   'value': psutil.phymem_usage().percent
+})
+</code></pre>
+
 
         {% endfor %}
         </ul>

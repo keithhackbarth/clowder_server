@@ -16,6 +16,7 @@ class RegisterView(RedirectView):
         user.first_name = request.POST['first_name']
         user.last_name = request.POST['last_name']
         user.language = request.POST['language']
+        user.save()
 
         user = authenticate(username=email, password=password)
         login(request, user)

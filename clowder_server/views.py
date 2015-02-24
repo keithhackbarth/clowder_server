@@ -16,10 +16,10 @@ class APIView(CsrfExemptMixin, View):
         name = request.POST.get('name')
         frequency = request.POST.get('frequency')
         value = request.POST.get('value')
-        publisher = request.POST.get('publisher')
+        api_key = request.POST.get('api_key')
         status = int(request.POST.get('status', 1))
 
-        user = ClowderUser.objects.get(pk=publisher)
+        user = ClowderUser.objects.get(public_key=api_key)
         ip = get_real_ip(request)
 
         if status == -1:

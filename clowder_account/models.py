@@ -1,8 +1,10 @@
+from shortuuidfield import ShortUUIDField
+
+from django.contrib import admin
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None):
@@ -40,6 +42,9 @@ class ClowderUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
     language = models.CharField(max_length=1024, blank=True)
 
+    public_key = ShortUUIDField(auto=True)
+    secret_key = ShortUUIDField(auto=True)
+
     USERNAME_FIELD = 'email'
 
     objects = CustomUserManager()
@@ -60,3 +65,6 @@ class ClowderUser(AbstractBaseUser, PermissionsMixin):
         Sends an email to this User.
         """
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+class ClowderUserAdmin(admin.ModelAdmin):
+    list_display = ('email', 'get_full_name', 'language', 'public_key', 'secret_key')
