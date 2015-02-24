@@ -5,7 +5,7 @@ dj-static==0.0.6
 django-braces==1.4.0
 django-heroku-sendgridify==0.1.1
 django-ipware==0.1.0
-django-shortuuidfield==0.1.2
+https://github.com/mkouhei/django-shortuuidfield/archive/805736baecbd54e325383891c32d9124e68cd90f.zip
 django-toolbelt==0.0.1
 future==0.14.3
 greenlet==0.4.5
