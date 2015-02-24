@@ -51,6 +51,16 @@
 
     </script>
 
+
+    <script>
+        $(function () {
+            $('a').on('click', function() {
+              ga('send', 'event', 'link', 'click', $(this).text());
+            });
+        });
+
+    </script>
+
 </head>
 
 <body>
