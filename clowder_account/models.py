@@ -6,6 +6,8 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
+from clowder_server.models import Ping
+
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None):
         if not email:
@@ -67,4 +69,8 @@ class ClowderUser(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
 class ClowderUserAdmin(admin.ModelAdmin):
-    list_display = ('email', 'get_full_name', 'language', 'public_key', 'secret_key')
+    list_display = ('email', 'public_key', 'get_full_name', 'language', 'number_of_pings')
+
+    def number_of_pings(self, obj):
+        return '%s' % (Ping.objects.filter(user=obj).count())
+    number_of_pings.allow_tags = True
