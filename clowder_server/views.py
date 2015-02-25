@@ -11,6 +11,7 @@ from clowder_server.emailer import send_alert
 from clowder_server.models import Alert, Ping
 
 class APIView(CsrfExemptMixin, View):
+
     def post(self, request):
 
         name = request.POST.get('name')
