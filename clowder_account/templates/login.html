@@ -16,8 +16,6 @@
             $('.nav-tabs a[href=#'+url.split('#')[1]+']').tab('show') ;
         }
 
-
-
         // Change hash for page-reload
         $('.nav-tabs a').on('shown.bs.tab', function (e) {
             window.location.hash = e.target.hash;
@@ -55,12 +53,9 @@
 
 
                         <fieldset>
-                          <div id="legend">
-                            <legend class="">Login</legend>
-                          </div>
                           <div class="control-group">
                             <!-- Username -->
-                            <label class="control-label"  for="username">Username</label>
+                            <label class="control-label"  for="username">Email</label>
                             <div class="controls">
                               <input type="text" id="username" name="username" placeholder="" class="input-xlarge">
                             </div>
