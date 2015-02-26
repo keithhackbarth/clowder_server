@@ -16,12 +16,15 @@ class APIView(CsrfExemptMixin, View):
 
         name = request.POST.get('name')
         frequency = request.POST.get('frequency')
-        value = request.POST.get('value')
+        value = request.POST.get('value', 1)
         api_key = request.POST.get('api_key')
         status = int(request.POST.get('status', 1))
 
         user = ClowderUser.objects.get(public_key=api_key)
-        ip = get_real_ip(request)
+        ip = get_real_ip(request) or '127.0.0.1'
+
+        if not name:
+            return HttpResponse('name needed')
 
         if status == -1:
             send_alert(request.user, name)
@@ -63,3 +66,10 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         context = {'pings': self._pings(request.user)}
         return self.render_to_response(context)
+
+
+class DeleteView(LoginRequiredMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        Ping.objects.filter(user=request.user).delete()
+        return HttpResponse('ok')

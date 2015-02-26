@@ -49,7 +49,16 @@
             You can no alerts yet. Please refer to the documentation on how to get started.
             <br><br>
 
-            API Key: <b>{{user.public_key}}</b><br><br>
+            API Key: <b>{{user.public_key}}</b>
+            <br><br><br><br>
+
+            <h4>cURL Example</h4>
+            <hr>
+            curl --data 'api_key={{user.public_key}}&name=example' http://127.0.0.1:5000/api
+            <br><br>
+
+            <h4>Python Example</h4>
+            <hr>
             pip install https://github.com/keithhackbarth/clowder_python_client/archive/master.zip<br><br>
 
 <pre><code>import clowder
