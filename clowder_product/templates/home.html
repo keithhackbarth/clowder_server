@@ -2,6 +2,22 @@
 {% load staticfiles %}
 
 {% block content %}
+
+<style>
+    .unseen {display: none}
+</style>
+
+<script>
+    $(function () {
+        $('.code-link').click(function () {
+            var language = '.' + $(this).text().toLowerCase(),
+                $parent = $(this).parent();
+            $parent.find('.code-block').hide();
+            $parent.find(language).show();
+        });
+    });
+</script>
+
 <!-- About -->
 <section id="about" class="about">
     <div class="container">
@@ -9,38 +25,121 @@
           <div class="col-md-6">
             <h2>You have a script you need to run monthly.</h2>
             <p class="lead">Just add ~1 line of code to the bottom of your script.</p>
-            <pre class="text-left">
 
-<a>Python</a> - <a>Node</a> - <a>Ruby</a> - <a>PHP</a>
+            <a class="code-link">Python</a> -
+            <a class="code-link">Node</a> -
+            <a class="code-link">Ruby</a> -
+            <a class="code-link">PHP</a>
 
-<code class="python">import clowder
+<pre class="text-left python code-block">
+<code>import clowder
 import datetime
 
-clowder.Watch(
+clowder.ok(
     name='Monthly Job',
     schedule=datetime.timedelta(days=31),
-).ok()
+)
+
 </code>
-            </pre>
+</pre>
+
+<pre class="text-left php code-block unseen">
+<code>require 'clowder.php'
+
+$clowder->ok([
+    'name' => 'Monthly Job',
+    'schedule' => new DateInterval('P31D')
+]);
+
+</code>
+</pre>
+
+<pre class="text-left ruby code-block unseen">
+<code>require "clowder"
+require "duration"
+
+clowder.ok(
+    name: 'Monthly Job',
+    schedule: Duration.new(:days => 5)
+)
+
+</code>
+</pre>
+
+<pre class="text-left node code-block unseen">
+<code>var clowder = require('clowder');
+var later = require('later');
+
+clowder.ok({
+    'name': 'Monthly Job',
+    'schedule': later.recur().every().month(),
+});
+
+</code>
+</pre>
           </div>
           <div class="col-md-6">
             <h2>You want an alert when CPU usage goes over 60%.</h2>
             <p class="lead">Just add ~1 line of code to the bottom of your script.</p>
-            <pre class="text-left">
 
-<a>Python</a> - <a>Node</a> - <a>Ruby</a> - <a>PHP</a>
+            <a class="code-link">Python</a> -
+            <a class="code-link">Node</a> -
+            <a class="code-link">Ruby</a> -
+            <a class="code-link">PHP</a>
 
-<code class="python">import clowder
+<pre class="text-left python code-block">
+<code>import clowder
 import psutil
 
 cpu_percentage = psutil.cpu_percent()
 
-clowder.Watch(
+clowder.submit(
     name='CPU Percentage',
-    alert=lambda x: x >= 60
-).submit(cpu_percentage)
+    alert=lambda x: x >= 60,
+    value=cpu_percentage
+)
+
 </code>
-            </pre>
+</pre>
+
+<pre class="text-left php code-block unseen">
+<code>require 'clowder.php'
+
+$load = sys_getloadavg();
+
+$clowder->ok([
+    'name' => 'CPU Percentage',
+    'value' => $load[0],
+    'alert' => function (x) {return x >= 60;}
+]);
+
+</code>
+</pre>
+
+<pre class="text-left ruby code-block unseen">
+<code>require "clowder"
+require "duration"
+
+clowder.ok(
+    name: 'CPU Percentage',
+    schedule: Duration.new(:days => 5)
+)
+
+</code>
+</pre>
+
+<pre class="text-left node code-block unseen">
+<code>var clowder = require('clowder');
+var later = require('later');
+
+clowder.ok({
+    'name': 'CPU Percentage',
+    'schedule': later.recur().every().month(),
+});
+
+</code>
+</pre>
+
           </div>
         </div>
         <!-- /.row -->
