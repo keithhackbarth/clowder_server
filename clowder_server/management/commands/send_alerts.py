@@ -15,11 +15,11 @@ class Command(BaseCommand):
         for user in ClowderUser.objects.all():
             pings = Ping.objects.filter(user=user).order_by('-create')[:500]
             pings = list(pings) # forces database hit
-            Ping.objects.exclude(user=user, pk__in=pings).delete()
+            Ping.objects.filter(user=user).exclude(pk__in=pings).delete()
 
         # send alerts
         alerts = Alert.objects.filter(notify_at__lte=datetime.datetime.now)
         for alert in alerts:
-            send_alert(request.user, alert.name)
+            send_alert(alert.user, alert.name)
             alert.notify_at = None
             alert.save()
