@@ -73,6 +73,7 @@
           <a href="/" class="navbar-brand"><img height="50px" src="{% static "img/logo.png" %}" /></a>
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse">
+          {% if not request.user.is_authenticated %}
           <ul class="nav navbar-nav">
             <li class="active">
               <a href="/dashboard/">Getting started</a>
@@ -94,6 +95,7 @@
               <a href="/dashboard/">Documentation</a>
             </li>
           </ul>
+          {% endif %}
           <ul class="nav navbar-nav navbar-right">
             {% if request.user.is_authenticated %}
             <li><a href="/accounts/logout">Log Out</a></li>

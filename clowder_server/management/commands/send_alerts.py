@@ -14,7 +14,7 @@ class Command(BaseCommand):
         # delete old pings
         for user in ClowderUser.objects.all():
             pings = Ping.objects.filter(user=user).order_by('-create')[:500]
-            pings = list(pings) # forces database hit
+            pings = list(pings.values_list("id", flat=True))
             Ping.objects.filter(user=user).exclude(pk__in=pings).delete()
 
         # send alerts
