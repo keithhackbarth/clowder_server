@@ -248,3 +248,7 @@ hr.small {
 footer {
     padding: 100px 0;
 }
+
+/* New */
+
+.unseen {display: none}

@@ -7,11 +7,98 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
   google.load("visualization", "1", {packages:["corechart"]});
+
+  // Show hide code bubbles
+  function toggle(id) {
+    $('.code-example').not(id).hide();
+    $(id).toggle();
+  };
+
+  // Submit form without redirect
+  $(function () {
+    $('#example-form').submit(function () {
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            data: $(this).serialize(),
+            success: location.reload()
+          });
+        return false;
+    });
+  });
+
 </script>
 
 <div class="container">
     <div class="row">
       <div class="col-md-8">
+
+        <br><br>
+        API Key: <b>{{user.public_key}}</b>
+        <br><br>
+
+        <button type="button" class="btn btn-primary" onclick="toggle('#html-example')">HTML Form Example</button>
+        <button type="button" class="btn btn-primary" onclick="toggle('#php-example')">PHP Example</button>
+        <button type="button" class="btn btn-primary" onclick="toggle('#python-example')">Python Example</button>
+        <button type="button" class="btn btn-primary" onclick="toggle('#curl-example')">cURL Example</button>
+        <br><br>
+
+        <div id="html-example" class="code-example unseen">
+            <h4>HTML Form Example</h4>
+            <hr>
+            <br>
+            <form id="example-form" action="/api" method="post">
+                <input name="name" type="text" value="Test of Clowder" />
+                <input name="value" type="numeric" value="10" />
+                <input name="api_key" type="hidden" value="{{user.public_key}}" />
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <div id="curl-example" class="code-example unseen">
+            <h4>cURL Example (just copy-paste into your terminal window)</h4>
+            <hr>
+            curl --data 'api_key={{user.public_key}}&name=example' http://www.clowder.com/api
+            <br><br>
+        </div>
+
+        <div id="python-example" class="code-example unseen">
+            <h4>Python Example</h4>
+            <hr>
+            <a href="https://github.com/keithhackbarth/clowder_python_client/archive/master.zip">Download from github repo</a>
+            <br>or<br>
+            pip install https://github.com/keithhackbarth/clowder_python_client/archive/master.zip<br><br>
+
+<pre><code>import clowder
+import psutil
+
+clowder.api_key = '{{user.public_key}}'
+
+clowder.ok({
+   'name': 'Memory Utilization',
+   'value': psutil.phymem_usage().percent
+})
+</code></pre>
+        </div>
+
+        <div id="php-example" class="code-example unseen">
+            <h4>PHP Example</h4>
+            <hr>
+            <a href="https://github.com/keithhackbarth/clowder_php_client/archive/master.zip">Download from github repo</a>
+
+<pre><code>require "clowder.php";
+
+define("API_KEY", '{{user.public_key}}');
+
+$clowder = new Clowder(API_KEY);
+
+$clowder->ok([
+    'name' => 'Memory Utilization',
+    'value' => memory_get_usage()
+]);
+</code></pre>
+        </div>
+
 
         <ul>
         {% for ping_name in ping_names %}
@@ -42,37 +129,6 @@
 
                 <div id="chart_div_{{forloop.counter}}" style="width: 900px; height: 500px;"></div>
             </li>
-
-
-        {% empty %}
-
-            You can no alerts yet. Please refer to the documentation on how to get started.
-            <br><br>
-
-            API Key: <b>{{user.public_key}}</b>
-            <br><br><br><br>
-
-            <h4>cURL Example (just copy-paste into your terminal window)</h4>
-            <hr>
-            curl --data 'api_key={{user.public_key}}&name=example' http://127.0.0.1:5000/api
-            <br><br>
-
-            <h4>Python Example</h4>
-            <hr>
-            pip install https://github.com/keithhackbarth/clowder_python_client/archive/master.zip<br><br>
-
-<pre><code>import clowder
-import psutil
-
-clowder.api_key = '{{user.public_key}}'
-
-clowder.ok({
-   'name': 'Memory Utilization',
-   'value': psutil.phymem_usage().percent
-})
-</code></pre>
-
-
         {% endfor %}
         </ul>
 
