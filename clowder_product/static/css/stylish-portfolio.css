@@ -251,4 +251,8 @@ footer {
 
 /* New */
 
+.code-example {
+  margin: 50px 30px;
+}
+
 .unseen {display: none}
