@@ -27,7 +27,7 @@ class APIView(CsrfExemptMixin, View):
             return HttpResponse('name needed')
 
         if status == -1:
-            send_alert(request.user, name)
+            #send_alert(request.user, name)
 
             Alert.objects.create(
                 name=name,
