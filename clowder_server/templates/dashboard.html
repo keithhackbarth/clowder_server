@@ -103,7 +103,14 @@ $clowder->ok([
         {% for ping_name in ping_names %}
             <li>
                 {{ ping_name.grouper }}<br>
-                <b>Passing</b> - {% with ping_name.list|last as last %}{{last.create.isoformat}}{% endwith %}
+                {% with ping_name.list|last as last %}
+                  {% if last.status_passing %}
+                      <b style="color:green">Passing</b>
+                  {% else %}
+                      <b style="color:red">Failing</b>
+                  {% endif %}
+                  - {{last.create.isoformat}}
+                {% endwith %}
                 <script type="text/javascript">
                   google.setOnLoadCallback(drawChart);
                   function drawChart() {
