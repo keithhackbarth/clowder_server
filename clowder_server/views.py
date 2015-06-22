@@ -52,6 +52,7 @@ class APIView(CsrfExemptMixin, View):
             user=user,
             value=value,
             ip_address=ip,
+            status_passing=(status == 1)
         )
         return HttpResponse('ok')
 
