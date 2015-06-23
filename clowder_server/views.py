@@ -27,7 +27,7 @@ class APIView(CsrfExemptMixin, View):
             return HttpResponse('name needed')
 
         if status == -1:
-            #send_alert(request.user, name)
+            send_alert(request.user, name)
 
             Alert.objects.create(
                 name=name,
@@ -36,7 +36,10 @@ class APIView(CsrfExemptMixin, View):
             )
 
         elif frequency:
-            expiration_date = datetime.datetime.now() + datetime.timedelta(seconds=int(frequency))
+            expiration_date = (
+                datetime.datetime.now() +
+                datetime.timedelta(seconds=int(frequency))
+            )
 
             Alert.objects.filter(name=name).delete()
 
@@ -73,4 +76,14 @@ class DeleteView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         Ping.objects.filter(user=request.user).delete()
+        Alert.objects.filter(user=request.user).delete()
+        return HttpResponse('ok')
+
+    def post(self, request, *args, **kwargs):
+        name = request.POST.get('name')
+
+        if name:
+            Ping.objects.filter(user=request.user, name=name).delete()
+            Alert.objects.filter(user=request.user, name=name).delete()
+
         return HttpResponse('ok')
