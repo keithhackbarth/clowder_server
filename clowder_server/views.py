@@ -4,7 +4,7 @@ from ipware.ip import get_real_ip
 import pytz
 
 from django.http import HttpResponse
-from djang.contrib.auth import decorators
+from django.contrib.auth import decorators
 from django.views.generic import TemplateView, View
 
 from clowder_account.models import ClowderUser
