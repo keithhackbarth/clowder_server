@@ -4,6 +4,7 @@ from ipware.ip import get_real_ip
 import pytz
 
 from django.http import HttpResponse
+from djang.contrib.auth import decorators
 from django.views.generic import TemplateView, View
 
 from clowder_account.models import ClowderUser
@@ -72,19 +73,23 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         return self.render_to_response(context)
 
 
-class DeleteView(LoginRequiredMixin, View):
+class DeleteView(CsrfExemptMixin, View):
 
+    @decorators.login_required
     def get(self, request, *args, **kwargs):
         Ping.objects.filter(user=request.user).delete()
         Alert.objects.filter(user=request.user).delete()
         return HttpResponse('ok')
 
     def post(self, request, *args, **kwargs):
+        api_key = request.POST.get('api_key')
         name = request.POST.get('name')
 
+        user = ClowderUser.objects.get(public_key=api_key)
+
         if name:
-            Ping.objects.filter(user=request.user, name=name).delete()
-            Alert.objects.filter(user=request.user, name=name).delete()
+            Ping.objects.filter(user=user, name=name).delete()
+            Alert.objects.filter(user=user, name=name).delete()
             return HttpResponse('deleted')
 
         return HttpResponse('ok')
