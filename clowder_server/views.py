@@ -85,5 +85,6 @@ class DeleteView(LoginRequiredMixin, View):
         if name:
             Ping.objects.filter(user=request.user, name=name).delete()
             Alert.objects.filter(user=request.user, name=name).delete()
+            return HttpResponse('deleted')
 
         return HttpResponse('ok')
