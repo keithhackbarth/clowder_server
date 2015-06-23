@@ -98,6 +98,7 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             {% if request.user.is_authenticated %}
+            <li><a href="/dashboard">Dashboard</a></li>
             <li><a href="/accounts/logout">Log Out</a></li>
             {% else %}
             <li><a href="/accounts/login#create">Sign Up</a></li>
