@@ -70,18 +70,6 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             user=user, create__gte=three_days
         ).order_by('name', 'create')
 
-    def _num_passing_pings(self, user):
-        three_days = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=3)
-        return Ping.objects.filter(
-            user=user, status_passing=True, create__gte=three_days
-        ).distinct('name').order_by('name', 'create').count()
-
-    def _num_failing_pings(self, user):
-        three_days = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=3)
-        return Ping.objects.filter(
-            user=user, status_passing=False, create__gte=three_days
-        ).distinct('name').order_by('name', 'create').count()
-
     def _total_num_pings(self, user):
         return self._pings(user).distinct('name').count()
 
@@ -91,8 +79,8 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         }
         total_num_pings = self._total_num_pings(request.user)
         if total_num_pings:
-            context['num_passing'] = self._num_passing_pings(request.user)
-            context['num_failing'] = self._num_failing_pings(request.user)
+            context['num_passing'] = Ping.num_passing(request.user)
+            context['num_failing'] = Ping.num_failing(request.user)
             context['total_num_pings'] = total_num_pings
             context['percent_passing'] = round(
                 (float(context['num_passing']) / float(total_num_pings)) * 100

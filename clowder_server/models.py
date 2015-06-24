@@ -1,3 +1,4 @@
+from django.db import connection
 from django.db import models
 
 class Base(models.Model):
@@ -20,3 +21,33 @@ class Alert(Base):
 class Ping(Base):
     value = models.FloatField()
     status_passing = models.BooleanField(default=True)
+
+    @classmethod
+    def num_passing(cls, user):
+        cursor = connection.cursor()
+        cursor.execute('''
+        SELECT COUNT(*) FROM (
+          SELECT DISTINCT ON (name)
+          name, MAX(clowder_server_ping.create),
+          clowder_server_ping.status_passing FROM
+          clowder_server_ping WHERE user_id=73
+          GROUP BY name, clowder_server_ping.status_passing
+        ) AS q1 WHERE q1.status_passing=true;
+        ''')
+        result = cursor.fetchone()
+        return result[0] if result else 0
+
+    @classmethod
+    def num_failing(cls, user):
+        cursor = connection.cursor()
+        cursor.execute('''
+        SELECT COUNT(*) FROM (
+          SELECT DISTINCT ON (name)
+          name, MAX(clowder_server_ping.create),
+          clowder_server_ping.status_passing FROM
+          clowder_server_ping WHERE user_id=73
+          GROUP BY name, clowder_server_ping.status_passing
+        ) AS q1 WHERE q1.status_passing=false;
+        ''')
+        result = cursor.fetchone()
+        return result[0] if result else 0
