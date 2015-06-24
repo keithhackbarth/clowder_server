@@ -37,6 +37,11 @@
       });
       return false;
   }
+
+  // Let users show/hide charts
+  $(".service-item").click(function() {
+      $(this).find(".service-item-chart").toggle();
+  });
 </script>
 
 <div class="container">
@@ -158,7 +163,7 @@ $clowder->ok([
                   }
                 </script>
 
-                <div id="chart_div_{{forloop.counter}}" style="width: 900px; height: 500px;"></div>
+                <div class="service-item-chart" id="chart_div_{{forloop.counter}}" style="width: 900px; height: 500px; display:none;"></div>
             </li>
         {% endfor %}
         </ul>
