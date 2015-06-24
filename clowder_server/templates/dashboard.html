@@ -99,6 +99,10 @@ $clowder->ok([
         </div>
 
 
+        {% if ping_names %}
+        <hr/>
+        {% endif %}
+
         <ul>
         {% for ping_name in ping_names %}
             <li>
