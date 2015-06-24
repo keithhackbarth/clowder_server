@@ -71,10 +71,10 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         ).order_by('name', 'create')
 
     def _num_passing_pings(self, user):
-        return self._pings(user).distinct('name').filter(status_passing=True).count()
+        return self._pings(user).filter(status_passing=True).distinct('name').count()
 
     def _num_failing_pings(self, user):
-        return self._pings(user).distinct('name').filter(status_passing=False).count()
+        return self._pings(user).filter(status_passing=False).distinct('name').count()
 
     def _total_num_pings(self, user):
         return self._pings(user).distinct('name').count()
