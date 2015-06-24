@@ -31,10 +31,10 @@
 <code>import clowder
 import datetime
 
-clowder.ok(
-    name='Monthly Job',
-    schedule=datetime.timedelta(days=31),
-)
+clowder.ok({
+    'name': 'Monthly Job',
+    'frequency': datetime.timedelta(days=31)
+})
 
 </code>
 </pre>
@@ -44,7 +44,7 @@ clowder.ok(
 
 $clowder->ok([
     'name' => 'Monthly Job',
-    'schedule' => new DateInterval('P31D')
+    'frequency' => new DateInterval('P31D')
 ]);
 
 </code>
@@ -54,10 +54,11 @@ $clowder->ok([
 <code>require "clowder"
 require "duration"
 
-clowder.ok(
+client = Clowder::Client.new("...")
+client.ok({
     name: 'Monthly Job',
-    schedule: Duration.new(:days => 5)
-)
+    frequency: Duration.new(days: 5)
+})
 
 </code>
 </pre>
@@ -116,10 +117,11 @@ $clowder->ok([
 <code>require "clowder"
 require "duration"
 
-clowder.ok(
+client = Clowder::Client.new("...")
+client.ok({
     name: 'CPU Percentage',
-    schedule: Duration.new(:days => 5)
-)
+    schedule: Duration.new(days: 5)
+})
 
 </code>
 </pre>
