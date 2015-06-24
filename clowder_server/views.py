@@ -70,8 +70,22 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             user=user, create__gte=three_days
         ).order_by('name', 'create')
 
+    def _num_passing_pings(self, user):
+        return self._pings(user).distinct('name').filter(status_passing=True).count()
+
+    def _num_failing_pings(self, user):
+        return self._pings(user).distinct('name').filter(status_passing=False).count()
+
     def get(self, request, *args, **kwargs):
-        context = {'pings': self._pings(request.user)}
+        num_passing = self._num_passing_pings(request.user)
+        num_failing = self._num_failing_pings(request.user)
+        percent_passing = float(num_passing) / float(num_failing)
+        context = {
+            'pings': self._pings(request.user),
+            'num_passing': num_passing,
+            'num_failing': num_failing,
+            'percent_passing': round(percent_passing)
+        }
         return self.render_to_response(context)
 
 

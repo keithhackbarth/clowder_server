@@ -28,7 +28,7 @@
             url: $(this).attr('action'),
             type: $(this).attr('method'),
             data: $(this).serialize(),
-            success: location.reload()
+            success: location.reload(true)
           });
         return false;
     });
@@ -40,7 +40,7 @@
           type: "POST",
           url: "http://www.clowder.io/delete",
           data: {"name": name, "api_key": "{{ user.public_key }}"},
-          success: location.reload()
+          success: location.reload(true)
       });
       return false;
   }
@@ -51,11 +51,6 @@
         $(this).find(".service-item-chart").toggle();
     });
   });
-
-  // Hide all graphs after load
-  /*$(document).ready(function() {
-      $(".service-item-chart").hide();
-  });*/
 </script>
 
 <div class="container">
@@ -134,6 +129,12 @@ $clowder->ok([
         <div class="alert alert-success">
           Looks like you haven't created any service checks yet.
           <strong>To get started check out the examples above</strong>
+        </div>
+        {% else %}
+        <div class="progress">
+          <div class="progress-bar {% if percent_passing >= 95 %}progress-bar-success{% elif percent_passing >= 75 %}progress-bar-warning{% else %}progress-bar-danger{% endif %}" role="progressbar" aria-valuenow="{{ percent_passing }}" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+            <span>{{ percent_passing }}% Passing ({{ num_passing }} / {{ num_failing}})</span>
+          </div>
         </div>
         {% endif %}
 
