@@ -109,22 +109,28 @@ $clowder->ok([
         </div>
 
 
-        {% if ping_names %}
         <hr/>
+
+        {% if not ping_names%}
+        <div class="alert alert-success">
+          Looks like you haven't created any service checks yet.
+          <strong>To get started check out the examples above</strong>
+        </div>
         {% endif %}
 
-        <ul>
+        <ul class="list-group">
         {% for ping_name in ping_names %}
-            <li>
+            {% with ping_name.list|last as last %}
+            <li class="list-group-item {% if last.status_passing %}list-group-item-success{% else %}list-group-item-danger{% endif %}">
                 {{ ping_name.grouper }} - <a href="javascript:delete_service('{{ ping_name.grouper }}')" style="color:red;">Delete</a><br>
-                {% with ping_name.list|last as last %}
+                
                   {% if last.status_passing %}
                       <b style="color:green">Passing</b>
                   {% else %}
                       <b style="color:red">Failing</b>
                   {% endif %}
                   - {{last.create.isoformat}}
-                {% endwith %}
+            {% endwith %}
                 <script type="text/javascript">
                   google.setOnLoadCallback(drawChart);
                   function drawChart() {

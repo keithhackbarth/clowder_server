@@ -66,7 +66,9 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
     def _pings(self, user):
         three_days = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=3)
-        return Ping.objects.filter(user=user, create__gte=three_days).order_by('name', 'create')
+        return Ping.objects.filter(
+            user=user, create__gte=three_days
+        ).order_by('name', 'create')
 
     def get(self, request, *args, **kwargs):
         context = {'pings': self._pings(request.user)}
