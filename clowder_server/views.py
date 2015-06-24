@@ -74,13 +74,13 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         three_days = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=3)
         return Ping.objects.filter(
             user=user, status_passing=True, create__gte=three_days
-        ).distinct('name').order_by('create').count()
+        ).distinct('name').order_by('name', 'create').count()
 
     def _num_failing_pings(self, user):
         three_days = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=3)
         return Ping.objects.filter(
             user=user, status_passing=False, create__gte=three_days
-        ).distinct('name').count()
+        ).distinct('name').order_by('name', 'create').count()
 
     def _total_num_pings(self, user):
         return self._pings(user).distinct('name').count()
