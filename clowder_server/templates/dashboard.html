@@ -132,7 +132,7 @@ $clowder->ok([
         </div>
         {% else %}
         <div class="progress">
-          <div class="progress-bar {% if percent_passing >= 95 %}progress-bar-success{% elif percent_passing >= 75 %}progress-bar-warning{% else %}progress-bar-danger{% endif %}" role="progressbar" aria-valuenow="{{ percent_passing }}" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+          <div class="progress-bar {% if percent_passing >= 95 %}progress-bar-success{% elif percent_passing >= 75 %}progress-bar-warning{% else %}progress-bar-danger{% endif %}" role="progressbar" aria-valuenow="{{ percent_passing }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent_passing }}%">
             <span>{{ percent_passing }}% Passing ({{ num_passing }} / {{ total_num_pings }})</span>
           </div>
         </div>
