@@ -3,7 +3,11 @@
 {% block content %}
 
 {% regroup pings by name as ping_names %}
-
+<style type="text/css">
+  .service-item:hover {
+      background-color: #C2B2B2;
+  }
+</style>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
   google.load("visualization", "1", {packages:["corechart"]});
