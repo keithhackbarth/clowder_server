@@ -27,6 +27,16 @@
     });
   });
 
+  // Delete service by name
+  function delete_service(name) {
+      $.ajax({
+          type: "POST",
+          url: "http://www.clowder.io/delete",
+          data: {"name": name, "api_key": "{{ user.public_key }}"},
+          success: location.reload()
+      });
+      return false;
+  }
 </script>
 
 <div class="container">
@@ -106,7 +116,7 @@ $clowder->ok([
         <ul>
         {% for ping_name in ping_names %}
             <li>
-                {{ ping_name.grouper }}<br>
+                {{ ping_name.grouper }} - <a href="javascript:delete_service('{{ ping_name.grouper }}')" style="color:red;">Delete</a><br>
                 {% with ping_name.list|last as last %}
                   {% if last.status_passing %}
                       <b style="color:green">Passing</b>
