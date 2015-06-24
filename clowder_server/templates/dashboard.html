@@ -39,9 +39,16 @@
   }
 
   // Let users show/hide charts
-  $(".service-item").click(function() {
-      $(this).find(".service-item-chart").toggle();
+  $(document).ready(function() {
+    $(".service-item").click(function() {
+        $(this).find(".service-item-chart").toggle();
+    });
   });
+
+  // Hide all graphs after load
+  $(document).ready(function() {
+      $(".service-item-chart").hide();
+  })
 </script>
 
 <div class="container">
@@ -163,7 +170,7 @@ $clowder->ok([
                   }
                 </script>
 
-                <div class="service-item-chart" id="chart_div_{{forloop.counter}}" style="width: 900px; height: 500px; display:none;"></div>
+                <div class="service-item-chart" id="chart_div_{{forloop.counter}}" style="width: 900px; height: 500px;"></div>
             </li>
         {% endfor %}
         </ul>
