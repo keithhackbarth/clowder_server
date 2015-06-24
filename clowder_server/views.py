@@ -76,16 +76,20 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     def _num_failing_pings(self, user):
         return self._pings(user).distinct('name').filter(status_passing=False).count()
 
+    def _total_num_pings(self, user):
+        return self._pings(user).distinct('name').count()
+
     def get(self, request, *args, **kwargs):
-        num_passing = self._num_passing_pings(request.user)
-        num_failing = self._num_failing_pings(request.user)
-        percent_passing = float(num_passing) / float(num_failing)
         context = {
             'pings': self._pings(request.user),
-            'num_passing': num_passing,
-            'num_failing': num_failing,
-            'percent_passing': round(percent_passing)
         }
+        total_num_pings = self._total_num_pings(request.user)
+        if total_num_pings:
+            context['num_passing'] = self._num_passing_pings(request.user)
+            context['num_failing'] = self._num_failing_pings(request.user)
+            context['percent_passing'] = (
+                float(context['num_passing']) / float(total_num_pings)
+            )
         return self.render_to_response(context)
 
 
