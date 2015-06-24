@@ -87,8 +87,8 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         if total_num_pings:
             context['num_passing'] = self._num_passing_pings(request.user)
             context['num_failing'] = self._num_failing_pings(request.user)
-            context['percent_passing'] = (
-                float(context['num_passing']) / float(total_num_pings)
+            context['percent_passing'] = round(
+                (float(context['num_passing']) / float(total_num_pings)) * 100
             )
         return self.render_to_response(context)
 
