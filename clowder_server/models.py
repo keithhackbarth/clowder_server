@@ -28,10 +28,12 @@ class Ping(Base):
         cursor.execute('''
         SELECT COUNT(*) FROM (
           SELECT DISTINCT ON (name)
-          name, MAX(clowder_server_ping.create),
-          clowder_server_ping.status_passing FROM
-          clowder_server_ping WHERE user_id=73
-          GROUP BY name, clowder_server_ping.status_passing
+            name, last_value(clowder_server_ping.create) OVER wnd,
+            user_id, status_passing FROM clowder_server_ping
+          WHERE user_id = 73 WINDOW wnd AS (
+            PARTITION BY user_id ORDER BY clowder_server_ping.create
+            ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+          )
         ) AS q1 WHERE q1.status_passing=true;
         ''')
         result = cursor.fetchone()
@@ -43,10 +45,12 @@ class Ping(Base):
         cursor.execute('''
         SELECT COUNT(*) FROM (
           SELECT DISTINCT ON (name)
-          name, MAX(clowder_server_ping.create),
-          clowder_server_ping.status_passing FROM
-          clowder_server_ping WHERE user_id=73
-          GROUP BY name, clowder_server_ping.status_passing
+            name, last_value(clowder_server_ping.create) OVER wnd,
+            user_id, status_passing FROM clowder_server_ping
+          WHERE user_id = 73 WINDOW wnd AS (
+            PARTITION BY user_id ORDER BY clowder_server_ping.create
+            ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+          )
         ) AS q1 WHERE q1.status_passing=false;
         ''')
         result = cursor.fetchone()
