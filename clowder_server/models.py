@@ -31,7 +31,7 @@ class Ping(Base):
             name, last_value(clowder_server_ping.create) OVER wnd,
             user_id, status_passing FROM clowder_server_ping
           WHERE user_id = 73 WINDOW wnd AS (
-            PARTITION BY user_id ORDER BY clowder_server_ping.create
+            PARTITION BY user_id ORDER BY clowder_server_ping.create DESC
             ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
           )
         ) AS q1 WHERE q1.status_passing=true;
@@ -48,7 +48,7 @@ class Ping(Base):
             name, last_value(clowder_server_ping.create) OVER wnd,
             user_id, status_passing FROM clowder_server_ping
           WHERE user_id = 73 WINDOW wnd AS (
-            PARTITION BY user_id ORDER BY clowder_server_ping.create
+            PARTITION BY user_id ORDER BY clowder_server_ping.create DESC
             ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
           )
         ) AS q1 WHERE q1.status_passing=false;
