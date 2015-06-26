@@ -137,13 +137,13 @@ $clowder->ok([
         {% else %}
         <div class="btn-group btn-group-justified" role="group" aria-label="...">
           <div class="btn-group" role="group">
-            <button type="button" class="btn btn-primary">All</button>
+            <button type="button" class="btn btn-primary show-all-services">All</button>
           </div>
           <div class="btn-group" role="group">
-            <button type="button" class="btn btn-success">Passing</button>
+            <button type="button" class="btn btn-success show-passing-passing">Passing</button>
           </div>
           <div class="btn-group" role="group">
-            <button type="button" class="btn btn-danger">Failing</button>
+            <button type="button" class="btn btn-danger show-failing-services">Failing</button>
           </div>
         </div>
         <div style="clear:both">&nbsp;</div>
@@ -157,7 +157,7 @@ $clowder->ok([
         <ul class="list-group">
         {% for ping_name in ping_names %}
             {% with ping_name.list|last as last %}
-            <li class="service-item list-group-item {% if last.status_passing %}list-group-item-success{% else %}list-group-item-danger{% endif %}">
+            <li class="service-item list-group-item service {% if last.status_passing %}service-passing list-group-item-success{% else %}service-failing list-group-item-danger{% endif %}">
               <div class="service-heading">
                 {{ ping_name.grouper }} - 
                 {% if last.status_passing %}
