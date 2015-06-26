@@ -54,6 +54,20 @@
     $(".service-item").click(function() {
         $(this).find(".service-item-chart").toggle();
     });
+  
+    $(".show-all-services").click(function() {
+        $(".service").show();
+    });
+
+    $(".show-passing-services").click(function() {
+        $(".service-passing").show();
+        $(".service-failing").hide();
+    });
+
+    $(".show-failing-services").click(function() {
+        $(".service-passing").hide();
+        $(".service-failing").show();
+    });
   });
 </script>
 
@@ -140,7 +154,7 @@ $clowder->ok([
             <button type="button" class="btn btn-primary show-all-services">All</button>
           </div>
           <div class="btn-group" role="group">
-            <button type="button" class="btn btn-success show-passing-passing">Passing</button>
+            <button type="button" class="btn btn-success show-passing-services">Passing</button>
           </div>
           <div class="btn-group" role="group">
             <button type="button" class="btn btn-danger show-failing-services">Failing</button>
