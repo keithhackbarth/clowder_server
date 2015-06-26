@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block header %}
+<meta http-equiv="refresh" content="5"; URL="http://www.clowder.io/dashboard">
+{% endblock %}
+
 {% block content %}
 
 {% regroup pings by name as ping_names %}
