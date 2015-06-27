@@ -157,7 +157,12 @@ $clowder->ok([
             <button type="button" class="btn btn-success show-passing-services">Passing</button>
           </div>
           <div class="btn-group" role="group">
-            <button type="button" class="btn btn-danger show-failing-services">Failing</button>
+            <button type="button" class="btn btn-danger show-failing-services">
+              Failing
+              {% if num_failing > 0%}
+              <span class="badge">{{ num_failing }}</span>
+              {% endif %}
+            </button>
           </div>
         </div>
         <div style="clear:both">&nbsp;</div>
