@@ -79,75 +79,14 @@
         API Key: <b>{{user.public_key}}</b>
         <br><br>
 
-        <button type="button" class="btn btn-primary" onclick="toggle('#html-example')">HTML Form Example</button>
-        <button type="button" class="btn btn-primary" onclick="toggle('#php-example')">PHP Example</button>
-        <button type="button" class="btn btn-primary" onclick="toggle('#python-example')">Python Example</button>
-        <button type="button" class="btn btn-primary" onclick="toggle('#curl-example')">cURL Example</button>
-
-        <div id="html-example" class="code-example unseen">
-            <h4>HTML Form Example</h4>
-            <hr>
-            <br>
-            <form id="example-form" action="/api" method="post">
-                <input name="name" type="text" value="Test of Clowder" />
-                <input name="value" type="numeric" value="10" />
-                <input name="api_key" type="hidden" value="{{user.public_key}}" />
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </div>
-
-        <div id="curl-example" class="code-example unseen">
-            <h4>cURL Example (just copy-paste into your terminal window)</h4>
-            <hr>
-            curl --data 'api_key={{user.public_key}}&name=example' http://www.clowder.com/api
-            <br><br>
-        </div>
-
-        <div id="python-example" class="code-example unseen">
-            <h4>Python Example</h4>
-            <hr>
-            <a href="https://github.com/keithhackbarth/clowder_python_client/archive/master.zip">Download from github repo</a>
-            <br>or<br>
-            pip install https://github.com/keithhackbarth/clowder_python_client/archive/master.zip<br><br>
-
-<pre><code>import clowder
-import psutil
-
-clowder.api_key = '{{user.public_key}}'
-
-clowder.ok({
-   'name': 'Memory Utilization',
-   'value': psutil.phymem_usage().percent
-})
-</code></pre>
-        </div>
-
-        <div id="php-example" class="code-example unseen">
-            <h4>PHP Example</h4>
-            <hr>
-            <a href="https://github.com/keithhackbarth/clowder_php_client/archive/master.zip">Download from github repo</a>
-
-<pre><code>require "clowder.php";
-
-define("API_KEY", '{{user.public_key}}');
-
-$clowder = new Clowder(API_KEY);
-
-$clowder->ok([
-    'name' => 'Memory Utilization',
-    'value' => memory_get_usage()
-]);
-</code></pre>
-        </div>
-
-
         <hr/>
 
-        {% if not ping_names%}
+        {% if not ping_names %}
         <div class="alert alert-success">
           Looks like you haven't created any service checks yet.
-          <strong>To get started check out the examples above</strong>
+          <strong>To get started check out the examples below</strong>
         </div>
+
         {% else %}
         <div class="btn-group btn-group-justified" role="group" aria-label="...">
           <div class="btn-group" role="group">
@@ -178,7 +117,7 @@ $clowder->ok([
             {% with ping_name.list|last as last %}
             <li class="service-item list-group-item service {% if last.status_passing %}service-passing list-group-item-success{% else %}service-failing list-group-item-danger{% endif %}">
               <div class="service-heading">
-                {{ ping_name.grouper }} - 
+                {{ ping_name.grouper }} -
                 {% if last.status_passing %}
                 <strong style="color:green">Passing</strong>
                 {% else %}
@@ -188,7 +127,7 @@ $clowder->ok([
               </div>
               <div class="service-controls">
                 <a href="javascript:delete_service('{{ ping_name.grouper }}')" style="color:red;">Delete</a><br>
-              </div>  
+              </div>
               <div class="clear:both">&nbsp;</div>
             {% endwith %}
                 <script type="text/javascript">
@@ -217,6 +156,8 @@ $clowder->ok([
             </li>
         {% endfor %}
         </ul>
+
+        {% include "walkthrough.html" %}
 
         <br><br><br><br><br><br><br><br>
         {% endblock %}

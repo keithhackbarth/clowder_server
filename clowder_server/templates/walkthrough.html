@@ -1,0 +1,105 @@
+        <button type="button" class="btn btn-primary" onclick="toggle('#monitor-example')">Monitor a Website</button>
+        <button type="button" class="btn btn-primary" onclick="toggle('#html-example')">HTML Form Example</button>
+        <button type="button" class="btn btn-primary" onclick="toggle('#php-example')">PHP Example</button>
+        <button type="button" class="btn btn-primary" onclick="toggle('#python-example')">Python Example</button>
+        <button type="button" class="btn btn-primary" onclick="toggle('#curl-example')">cURL Example</button>
+
+        <div id="monitor-example" class="code-example unseen">
+            <h4>Monitor a Website Example</h4>
+            <hr>
+            <br>
+            Url of website you want to monitor:
+            <input id="url" name="name" type="text" style="width:300px" placeholder="http://www.example.com" />
+            <button type="submit" class="btn btn-primary" onclick="monitorExample()">Submit</button>
+            <div id="cronJob"></div>
+            <script>
+
+                function ValidURL(str) {
+                  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+                  '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+                  '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+                  '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+                  '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+                  '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+                  if(!pattern.test(str)) {
+                    alert("Please enter a valid URL.");
+                    return false;
+                  } else {
+                    return true;
+                  }
+                }
+
+                function monitorExample() {
+                    var url = $('#url').val();
+
+                    if (!ValidURL(url)) {
+                        return;
+                    }
+
+                    var cleanURL = url.replace(/[^\w\s]/gi, '');
+                    var cronJob = (
+                        '*/5 * * * * rate=$(curl -o /dev/null -s -w %{time_total}\\n  ' + url + '); ' +
+                        'curl --data "api_key={{user.public_key}}' +
+                        '&name=' + cleanURL +'&value=$rate" http://www.clowder.com/api');
+                    $('#cronJob').html('<br><br>Add the following line to your cron file.' +
+                        '<pre>' + cronJob + '</pre>' +
+                        'To edit your cron file. Go to your terminal and type in <pre>crontab -e</pre>');
+                };
+            </script>
+        </div>
+
+        <div id="html-example" class="code-example unseen">
+            <h4>HTML Form Example</h4>
+            <hr>
+            <br>
+            <form id="example-form" action="/api" method="post">
+                <input name="name" type="text" value="Test of Clowder" />
+                <input name="value" type="numeric" value="10" />
+                <input name="api_key" type="hidden" value="{{user.public_key}}" />
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <div id="curl-example" class="code-example unseen">
+            <h4>cURL Example (just copy-paste into your terminal window)</h4>
+            <hr>
+            curl --data 'api_key={{user.public_key}}&name=example' http://www.clowder.com/api
+            <br><br>
+        </div>
+
+        <div id="python-example" class="code-example unseen">
+            <h4>Python Example</h4>
+            <hr>
+            <a href="https://github.com/keithhackbarth/clowder_python_client/archive/master.zip">Download from github repo</a>
+            <br>or<br>
+            pip install https://github.com/keithhackbarth/clowder_python_client/archive/master.zip<br><br>
+
+<pre><code>import clowder
+import psutil
+
+clowder.api_key = '{{user.public_key}}'
+
+clowder.ok({
+   'name': 'Memory Utilization',
+   'value': psutil.phymem_usage().percent
+})
+</code></pre>
+        </div>
+
+        <div id="php-example" class="code-example unseen">
+            <h4>PHP Example</h4>
+            <hr>
+            <a href="https://github.com/keithhackbarth/clowder_php_client/archive/master.zip">Download from github repo</a>
+
+<pre><code>require "clowder.php";
+
+define("API_KEY", '{{user.public_key}}');
+
+$clowder = new Clowder(API_KEY);
+
+$clowder->ok([
+    'name' => 'Memory Utilization',
+    'value' => memory_get_usage()
+]);
+</code></pre>
+        </div>
