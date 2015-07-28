@@ -39,7 +39,7 @@
                     var cleanURL = url.replace(/[^\w\s]/gi, '');
                     var cronJob = (
                         '*/5 * * * * rate=$(curl -o /dev/null -s -w %{time_total}\\n  ' + url + '); ' +
-                        'curl --data "api_key={{user.public_key}}' +
+                        'curl --data "api_key={{user.company.public_key}}' +
                         '&name=' + cleanURL +'&value=$rate" http://www.clowder.com/api');
                     $('#cronJob').html('<br><br>Add the following line to your cron file.' +
                         '<pre>' + cronJob + '</pre>' +
@@ -55,7 +55,7 @@
             <form id="example-form" action="/api" method="post">
                 <input name="name" type="text" value="Test of Clowder" />
                 <input name="value" type="numeric" value="10" />
-                <input name="api_key" type="hidden" value="{{user.public_key}}" />
+                <input name="api_key" type="hidden" value="{{user.company.public_key}}" />
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
@@ -63,7 +63,7 @@
         <div id="curl-example" class="code-example unseen">
             <h4>cURL Example (just copy-paste into your terminal window)</h4>
             <hr>
-            curl --data 'api_key={{user.public_key}}&name=example' http://www.clowder.com/api
+            curl --data 'api_key={{user.company.public_key}}&name=example' http://www.clowder.com/api
             <br><br>
         </div>
 
@@ -77,7 +77,7 @@
 <pre><code>import clowder
 import psutil
 
-clowder.api_key = '{{user.public_key}}'
+clowder.api_key = '{{user.company.public_key}}'
 
 clowder.ok({
    'name': 'Memory Utilization',
@@ -93,7 +93,7 @@ clowder.ok({
 
 <pre><code>require "clowder.php";
 
-define("API_KEY", '{{user.public_key}}');
+define("API_KEY", '{{user.company.public_key}}');
 
 $clowder = new Clowder(API_KEY);
 

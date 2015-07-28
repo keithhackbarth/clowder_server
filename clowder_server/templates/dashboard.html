@@ -43,7 +43,7 @@
       $.ajax({
           type: "POST",
           url: "http://www.clowder.io/delete",
-          data: {"name": name, "api_key": "{{ user.public_key }}"},
+          data: {"name": name, "api_key": "{{ user.company.public_key }}"},
           success: location.reload(true)
       });
       return false;
@@ -76,7 +76,7 @@
       <div class="col-md-10">
 
         <br><br>
-        API Key: <b>{{user.public_key}}</b>
+        API Key: <b>{{user.company.public_key}}</b>
         <br><br>
 
         <hr/>

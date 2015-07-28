@@ -31,6 +31,11 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+class Company(models.Model):
+
+    public_key = ShortUUIDField(auto=True, db_index=True, unique=True)
+    secret_key = ShortUUIDField(auto=True)
+
 
 class ClowderUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=30, blank=True)
@@ -44,9 +49,7 @@ class ClowderUser(AbstractBaseUser, PermissionsMixin):
                     'active. Unselect this instead of deleting accounts.'))
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
     language = models.CharField(max_length=1024, blank=True)
-
-    public_key = ShortUUIDField(auto=True)
-    secret_key = ShortUUIDField(auto=True)
+    company = models.ForeignKey('clowder_account.Company', null=True)
 
     USERNAME_FIELD = 'email'
 
@@ -72,6 +75,10 @@ class ClowderUser(AbstractBaseUser, PermissionsMixin):
 class ClowderUserAdmin(admin.ModelAdmin):
     list_display = ('email', 'public_key', 'get_full_name', 'language', 'number_of_pings')
 
+    def public_key(self, obj):
+        return obj.company.public_key
+    public_key.allow_tags = True
+
     def number_of_pings(self, obj):
-        return '%s' % (Ping.objects.filter(user=obj).count())
+        return '%s' % (Ping.objects.filter(company=obj.company).count())
     number_of_pings.allow_tags = True
