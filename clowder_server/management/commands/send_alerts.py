@@ -2,7 +2,7 @@ import datetime
 
 from django.core.management.base import BaseCommand, CommandError
 
-from clowder_account.models import ClowderUser
+from clowder_account.models import Company
 from clowder_server.emailer import send_alert
 from clowder_server.models import Alert, Ping
 
@@ -12,10 +12,10 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         # delete old pings
-        for user in ClowderUser.objects.all():
-            pings = Ping.objects.filter(user=user).order_by('-create')[:500]
+        for company in Company.objects.all():
+            pings = Ping.objects.filter(company=company).order_by('-create')[:500]
             pings = list(pings.values_list("id", flat=True))
-            Ping.objects.filter(user=user).exclude(pk__in=pings).delete()
+            Ping.objects.filter(company=company).exclude(pk__in=pings).delete()
 
         # send alerts
         alerts = Alert.objects.filter(notify_at__lte=datetime.datetime.now)
