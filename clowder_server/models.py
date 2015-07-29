@@ -23,35 +23,35 @@ class Ping(Base):
     status_passing = models.BooleanField(default=True)
 
     @classmethod
-    def num_passing(cls, user):
+    def num_passing(cls, company_id):
         cursor = connection.cursor()
         cursor.execute('''
         SELECT COUNT(*) FROM (
           SELECT DISTINCT ON (name)
             name, last_value(clowder_server_ping.create) OVER wnd,
-            user_id, status_passing FROM clowder_server_ping
-          WHERE user_id = 73 WINDOW wnd AS (
-            PARTITION BY user_id ORDER BY clowder_server_ping.create DESC
+            company_id, status_passing FROM clowder_server_ping
+          WHERE company_id = %s WINDOW wnd AS (
+            PARTITION BY company_id ORDER BY clowder_server_ping.create DESC
             ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
           )
         ) AS q1 WHERE q1.status_passing=true;
-        ''')
+        ''', [company_id])
         result = cursor.fetchone()
         return result[0] if result else 0
 
     @classmethod
-    def num_failing(cls, user):
+    def num_failing(cls, company_id):
         cursor = connection.cursor()
         cursor.execute('''
         SELECT COUNT(*) FROM (
           SELECT DISTINCT ON (name)
             name, last_value(clowder_server_ping.create) OVER wnd,
-            user_id, status_passing FROM clowder_server_ping
-          WHERE user_id = 73 WINDOW wnd AS (
-            PARTITION BY user_id ORDER BY clowder_server_ping.create DESC
+            company_id, status_passing FROM clowder_server_ping
+          WHERE company_id = %s WINDOW wnd AS (
+            PARTITION BY company_id ORDER BY clowder_server_ping.create DESC
             ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
           )
         ) AS q1 WHERE q1.status_passing=false;
-        ''')
+        ''', [company_id])
         result = cursor.fetchone()
         return result[0] if result else 0

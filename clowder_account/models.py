@@ -36,6 +36,8 @@ class Company(models.Model):
     public_key = ShortUUIDField(auto=True, db_index=True, unique=True)
     secret_key = ShortUUIDField(auto=True)
 
+    def __unicode__(self):
+        return self.public_key
 
 class ClowderUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=30, blank=True)
