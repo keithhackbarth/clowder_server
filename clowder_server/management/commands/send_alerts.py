@@ -28,6 +28,6 @@ class Command(BaseCommand):
         # send alerts
         alerts = Alert.objects.filter(notify_at__lte=datetime.datetime.now)
         for alert in alerts:
-            send_alert(alert.user, alert.name)
+            send_alert(alert.company, alert.name)
             alert.notify_at = None
             alert.save()
