@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block header %}
-<meta http-equiv="refresh" content="30"; URL="http://www.clowder.io/dashboard">
+<meta http-equiv="refresh" content="3000"; URL="http://www.clowder.io/dashboard">
 {% endblock %}
 
 {% block content %}
@@ -126,6 +126,7 @@
                 - {{last.create.isoformat}}
               </div>
               <div class="service-controls">
+                Click for details -
                 <a href="javascript:delete_service('{{ ping_name.grouper }}')" style="color:red;">Delete</a><br>
               </div>
               <div class="clear:both">&nbsp;</div>
@@ -149,6 +150,7 @@
 
                     var chart = new google.visualization.AreaChart(document.getElementById('chart_div_{{forloop.counter}}'));
                     chart.draw(data, options);
+                    $(document.getElementById('chart_div_{{forloop.counter}}')).hide();
                   }
                 </script>
 
