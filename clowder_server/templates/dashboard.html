@@ -1,79 +1,18 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block header %}
 <meta http-equiv="refresh" content="3000"; URL="http://www.clowder.io/dashboard">
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script src="{% static "js/dashboard.js" %}"></script>
 {% endblock %}
 
 {% block content %}
 
 {% regroup pings by name as ping_names %}
-<style type="text/css">
-  .list-group-item-danger:hover {
-      background-color: #DAC8C8;
-  }
-  .list-group-item-success:hover {
-      background-color: #C9D8C2;
-  }
-</style>
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript">
-  google.load("visualization", "1", {packages:["corechart"]});
-
-  // Show hide code bubbles
-  function toggle(id) {
-    $('.code-example').not(id).hide();
-    $(id).toggle();
-  };
-
-  // Submit form without redirect
-  $(function () {
-    $('#example-form').submit(function () {
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: $(this).serialize(),
-            success: location.reload(true)
-          });
-        return false;
-    });
-  });
-
-  // Delete service by name
-  function delete_service(name) {
-      $.ajax({
-          type: "POST",
-          url: "http://www.clowder.io/delete",
-          data: {"name": name, "api_key": "{{ user.company.public_key }}"},
-          success: location.reload(true)
-      });
-      return false;
-  }
-
-  // Let users show/hide charts
-  $(document).ready(function() {
-    $(".service-item").click(function() {
-        $(this).find(".service-item-chart").toggle();
-    });
-
-    $(".show-all-services").click(function() {
-        $(".service").show();
-    });
-
-    $(".show-passing-services").click(function() {
-        $(".service-passing").show();
-        $(".service-failing").hide();
-    });
-
-    $(".show-failing-services").click(function() {
-        $(".service-passing").hide();
-        $(".service-failing").show();
-    });
-  });
-</script>
-
 <div class="container">
     <div class="row">
-      <div class="col-md-10">
+      <div class="col-md-12">
 
         <br><br>
         API Key: <b>{{user.company.public_key}}</b>
@@ -106,7 +45,16 @@
         </div>
         <div style="clear:both">&nbsp;</div>
         <div class="progress">
-          <div class="progress-bar {% if percent_passing >= 95 %}progress-bar-success{% elif percent_passing >= 75 %}progress-bar-warning{% else %}progress-bar-danger{% endif %}" role="progressbar" aria-valuenow="{{ percent_passing }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent_passing }}%">
+          <div class="progress-bar
+                {% if percent_passing >= 95 %}
+                    progress-bar-success
+                {% elif percent_passing >= 75 %}
+                    progress-bar-warning
+                {% else %}
+                    progress-bar-danger
+                {% endif %}"
+                role="progressbar" aria-valuenow="{{ percent_passing }}"
+                aria-valuemin="0" aria-valuemax="100" style="width: {{ percent_passing }}%">
             <span>{{ percent_passing }}% Passing ({{ num_passing }} / {{ total_num_pings }})</span>
           </div>
         </div>
@@ -115,21 +63,42 @@
         <ul class="list-group">
         {% for ping_name in ping_names %}
             {% with ping_name.list|last as last %}
-            <li class="service-item list-group-item service {% if last.status_passing %}service-passing list-group-item-success{% else %}service-failing list-group-item-danger{% endif %}">
-              <div class="service-heading">
-                {{ ping_name.grouper }} -
+
+            <li class="service-item list-group-item service
                 {% if last.status_passing %}
-                <strong style="color:green">Passing</strong>
+                service-passing list-group-item-success
                 {% else %}
-                <strong style="color:red">Failing</strong>
-                {% endif %}
-                - {{last.create.isoformat}}
-              </div>
-              <div class="service-controls">
-                Click for details -
-                <a href="javascript:delete_service('{{ ping_name.grouper }}')" style="color:red;">Delete</a><br>
-              </div>
-              <div class="clear:both">&nbsp;</div>
+                service-failing list-group-item-danger
+                {% endif %}">
+
+                <div class="container">
+                    <div class="row">
+                      <div class="col-md-4">
+                        {{ ping_name.grouper }}
+                      </div>
+                      <div class="col-md-4">
+                        {% if last.status_passing %}
+                        <strong style="color:green">Passing</strong>
+                        {% else %}
+                        <strong style="color:red">Failing</strong>
+                        {% endif %}
+                        <br>
+                        Last Ping: {{last.create|date:"DATETIME_FORMAT"}}<br>
+                        {% if last.get_closest_alert.notify_at %}
+                        Next Alert: {{last.get_closest_alert.notify_at|date:"DATETIME_FORMAT"}}
+                        {% else %}
+                        <br>
+                        {% endif %}
+                      </div>
+                      <div class="col-md-4">
+                          <div class="service-controls">
+                            <u>Details</u> -
+                            <a href="javascript:delete_service('{{ ping_name.grouper }}')" style="color:red;">Delete</a><br>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+
             {% endwith %}
                 <script type="text/javascript">
                   google.setOnLoadCallback(drawChart);

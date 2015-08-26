@@ -185,8 +185,11 @@ hr.small {
     padding: 50px 0;
 }
 
-.service-item {
-    margin-bottom: 30px;
+.list-group-item-danger:hover {
+  background-color: #DAC8C8;
+}
+.list-group-item-success:hover {
+  background-color: #C9D8C2;
 }
 
 /* Callout */

@@ -22,6 +22,13 @@ class Ping(Base):
     value = models.FloatField()
     status_passing = models.BooleanField(default=True)
 
+    def get_closest_alert(self):
+        return Alert.objects.filter(
+            name=self.name,
+            ip_address=self.ip_address,
+            company=self.company,
+        ).order_by('notify_at').first()
+
     @classmethod
     def num_passing(cls, company_id):
         cursor = connection.cursor()
