@@ -33,11 +33,18 @@ class CustomUserManager(BaseUserManager):
 
 class Company(models.Model):
 
+    name = models.CharField(max_length=30, blank=True)
     public_key = ShortUUIDField(auto=True, db_index=True, unique=True)
     secret_key = ShortUUIDField(auto=True)
 
     def __unicode__(self):
-        return self.public_key
+
+        if self.name:
+            name = self.name
+        else:
+            name = ClowderUser.objects.filter(company=self).first().email
+
+        return '%s (%s)' % (name, self.public_key)
 
 class ClowderUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=30, blank=True)
@@ -76,6 +83,7 @@ class ClowderUser(AbstractBaseUser, PermissionsMixin):
 
 class ClowderUserAdmin(admin.ModelAdmin):
     list_display = ('email', 'public_key', 'get_full_name', 'language', 'number_of_pings')
+    raw_id_fields = ("company",)
 
     def public_key(self, obj):
         return obj.company.public_key
