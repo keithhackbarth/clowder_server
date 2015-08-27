@@ -65,8 +65,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "dashboard.html"
 
     def _pings(self, user):
-        three_days = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=3)
-        return Ping.objects.all().order_by('name', 'create')
+        return Ping.objects.filter(company=user.company).order_by('name', 'create')
 
     def _total_num_pings(self, user):
         return self._pings(user).distinct('name').count()
