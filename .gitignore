@@ -4,3 +4,7 @@ db.sqlite3
 staticfiles
 .DS_Store
 *.dump
+bin/*
+include/*
+.Python
+pip-selfcheck.json

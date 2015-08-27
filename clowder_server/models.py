@@ -34,14 +34,15 @@ class Ping(Base):
         cursor = connection.cursor()
         cursor.execute('''
         SELECT COUNT(*) FROM (
-          SELECT DISTINCT ON (name)
-            name, last_value(clowder_server_ping.create) OVER wnd,
-            company_id, status_passing FROM clowder_server_ping
-          WHERE company_id = %s WINDOW wnd AS (
-            PARTITION BY company_id ORDER BY clowder_server_ping.create DESC
-            ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
-          )
-        ) AS q1 WHERE q1.status_passing=true;
+          SELECT
+            name,
+            rank() OVER (PARTITION BY name ORDER BY clowder_server_ping.create DESC) as rank,
+            status_passing
+          FROM clowder_server_ping
+          WHERE company_id = %s
+        ) AS q1
+          WHERE status_passing = true
+          AND rank = 1;
         ''', [company_id])
         result = cursor.fetchone()
         return result[0] if result else 0
@@ -51,14 +52,15 @@ class Ping(Base):
         cursor = connection.cursor()
         cursor.execute('''
         SELECT COUNT(*) FROM (
-          SELECT DISTINCT ON (name)
-            name, last_value(clowder_server_ping.create) OVER wnd,
-            company_id, status_passing FROM clowder_server_ping
-          WHERE company_id = %s WINDOW wnd AS (
-            PARTITION BY company_id ORDER BY clowder_server_ping.create DESC
-            ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
-          )
-        ) AS q1 WHERE q1.status_passing=false;
+          SELECT
+            name,
+            rank() OVER (PARTITION BY name ORDER BY clowder_server_ping.create DESC) as rank,
+            status_passing
+          FROM clowder_server_ping
+          WHERE company_id = %s
+        ) AS q1
+          WHERE status_passing = false
+          AND rank = 1;
         ''', [company_id])
         result = cursor.fetchone()
         return result[0] if result else 0
