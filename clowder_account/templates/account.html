@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+	<div class="row">
+        <div class="span12">
+              <div class="modal-body">
+                <div class="well">
+                    <fieldset>
+                        <label>First Name</label>
+                        <input name="first_name" type="text" value="{{user.first_name}}" class="input-xlarge">
+                    </fieldset>
+                    <fieldset>
+                        <label>Last Name</label>
+                        <input name="last_name" type="text" value="{{user.last_name}}" class="input-xlarge">
+                    </fieldset>
+                    <fieldset>
+                        <label>Email</label>
+                        <input name="email" type="text" value="{{user.email}}" class="input-xlarge">
+                    </fieldset>
+                    <fieldset>
+                        <label>Preferred Programming Language</label>
+                        <input name= "language"
+                            type="text" value="{{user.language}}" placeholder="Java, C++, Python, Go, etc." class="input-xlarge">
+                        <br><br>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+	</div>
+	<div class="row">
+        <div class="span12">
+              <div class="modal-body">
+                <div class="well">
+                    {% for peer in peers %}
+                        {{ peer.email }}
+                    {% endfor %}
+                </div>
+              </div>
+            </div>
+        </div>
+	</div>
+
+</div>
+
+
+{% endblock %}

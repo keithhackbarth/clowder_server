@@ -60,6 +60,7 @@ class APIView(CsrfExemptMixin, View):
         )
         return HttpResponse('ok')
 
+
 class DashboardView(LoginRequiredMixin, TemplateView):
 
     template_name = "dashboard.html"
