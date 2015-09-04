@@ -7,6 +7,8 @@
         <div class="span12">
               <div class="modal-body">
                 <div class="well">
+                    <h3>User Information</h3><br>
+
                     <fieldset>
                         <label>First Name</label>
                         <input name="first_name" type="text" value="{{user.first_name}}" class="input-xlarge">
@@ -33,9 +35,29 @@
         <div class="span12">
               <div class="modal-body">
                 <div class="well">
+                    <h3>Company Information</h3><br>
+
+                    <label>Company Name</label>
+                    <input name= "company"
+                        type="text" value="{{user.company.name}}" class="input-xlarge">
+                    <br><br>
+
                     {% for peer in peers %}
-                        {{ peer.email }}
+                        {{ peer.email }}<br>
                     {% endfor %}
+                </div>
+            </div>
+        </div>
+	</div>
+
+	<div class="row">
+        <div class="span12">
+              <div class="modal-body">
+                <div class="well">
+                    <h3>Public Status Page</h3><br>
+                    <a href="/public/{{user.company.secret_key}}/">
+                        http://www.clowder.io/public/{{user.company.secret_key}}/
+                    </a>
                 </div>
               </div>
             </div>

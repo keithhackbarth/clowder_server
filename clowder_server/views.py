@@ -20,6 +20,7 @@ class APIView(CsrfExemptMixin, View):
         value = request.POST.get('value', 1)
         api_key = request.POST.get('api_key')
         status = int(request.POST.get('status', 1))
+        public = bool(request.POST.get('public'))
 
         company = Company.objects.get(public_key=api_key)
         ip = get_real_ip(request) or '127.0.0.1'
@@ -29,6 +30,8 @@ class APIView(CsrfExemptMixin, View):
 
         if status == -1:
             send_alert(company, name)
+
+            Alert.objects.filter(name=name).delete()
 
             Alert.objects.create(
                 name=name,
@@ -56,7 +59,8 @@ class APIView(CsrfExemptMixin, View):
             company=company,
             value=value,
             ip_address=ip,
-            status_passing=(status == 1)
+            status_passing=(status == 1),
+            public=public,
         )
         return HttpResponse('ok')
 
@@ -79,6 +83,38 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         if total_num_pings:
             context['num_passing'] = Ping.num_passing(request.user.company_id)
             context['num_failing'] = Ping.num_failing(request.user.company_id)
+            context['total_num_pings'] = total_num_pings
+            context['percent_passing'] = round(
+                (float(context['num_passing']) / float(total_num_pings)) * 100
+            )
+        return self.render_to_response(context)
+
+
+class PublicView(TemplateView):
+
+    template_name = "dashboard.html"
+
+    def _pings(self, company):
+        return Ping.objects.filter(
+            company=company,
+            public=True
+        ).order_by('name', 'create')
+
+    def _total_num_pings(self, company):
+        return self._pings(company).distinct('name').count()
+
+    def get(self, request, secret_key):
+
+        company = Company.objects.get(secret_key=secret_key)
+
+        context = {
+            'pings': self._pings(company),
+            'public': True
+        }
+        total_num_pings = self._total_num_pings(company)
+        if total_num_pings:
+            context['num_passing'] = Ping.num_passing(company.id)
+            context['num_failing'] = Ping.num_failing(company.id)
             context['total_num_pings'] = total_num_pings
             context['percent_passing'] = round(
                 (float(context['num_passing']) / float(total_num_pings)) * 100

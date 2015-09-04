@@ -14,16 +14,22 @@
     <div class="row">
       <div class="col-md-12">
 
+        {% if not public %}
         <br><br>
         API Key: <b>{{user.company.public_key}}</b>
         <br><br>
+        {% endif %}
 
         <hr/>
 
         {% if not ping_names %}
         <div class="alert alert-success">
-          Looks like you haven't created any service checks yet.
-          <strong>To get started check out the examples below</strong>
+            {% if public %}
+                No public pings for this account yet!
+            {% else %}
+                Looks like you haven't created any service checks yet.
+                <strong>To get started check out the examples below</strong>
+            {% endif %}
         </div>
 
         {% else %}
@@ -128,7 +134,9 @@
         {% endfor %}
         </ul>
 
+        {% if not public %}
         {% include "walkthrough.html" %}
+        {% endif %}
 
         <br><br><br><br><br><br><br><br>
         {% endblock %}

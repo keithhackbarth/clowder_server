@@ -34,6 +34,7 @@ class Ping(Base):
     """
 
     value = models.FloatField()
+    public = models.BooleanField(default=False)
     status_passing = models.BooleanField(default=True)
 
     def is_passing(self):
