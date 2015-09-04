@@ -15,12 +15,39 @@ class Base(models.Model):
 
 
 class Alert(Base):
+    """
+    An alert is an alarm.
+    Alerts with a notify_at value are consider future alerts.
+    Alerts without a notify_at are considered failing.
+    """
+
     notify_at = models.DateTimeField(null=True, blank=True)
 
 
 class Ping(Base):
+    """
+    A ping is created every time a service contacts Clowder
+    A ping has a value attached that is used for graphing.
+    The value can be boolean or integer or float.
+    A ping also has a status.
+    If a status is not explicitly passed, then a -1 is assumed to be failing
+    """
+
     value = models.FloatField()
     status_passing = models.BooleanField(default=True)
+
+    def is_passing(self):
+
+        if not self.status_passing:
+            return False
+        elif Alert.objects.filter(
+                    name=self.name,
+                    company=self.company,
+                    notify_at__isnull=True,
+                ).exists():
+            return False
+
+        return True
 
     def get_closest_alert(self):
         return Alert.objects.filter(
@@ -35,13 +62,18 @@ class Ping(Base):
         cursor.execute('''
         SELECT COUNT(*) FROM (
           SELECT
-            name,
-            rank() OVER (PARTITION BY name ORDER BY clowder_server_ping.create DESC) as rank,
+            clowder_server_ping.name,
+            clowder_server_alert.id as alert_id,
+            rank() OVER (PARTITION BY clowder_server_ping.name ORDER BY clowder_server_ping.create DESC) as rank,
             status_passing
           FROM clowder_server_ping
-          WHERE company_id = %s
+          LEFT JOIN clowder_server_alert ON
+                clowder_server_ping.name = clowder_server_alert.name AND
+                clowder_server_ping.company_id = clowder_server_alert.company_id AND
+                clowder_server_alert.notify_at IS NULL
+          WHERE clowder_server_ping.company_id = %s
         ) AS q1
-          WHERE status_passing = true
+          WHERE status_passing = true AND alert_id IS NULL
           AND rank = 1;
         ''', [company_id])
         result = cursor.fetchone()
@@ -53,13 +85,18 @@ class Ping(Base):
         cursor.execute('''
         SELECT COUNT(*) FROM (
           SELECT
-            name,
-            rank() OVER (PARTITION BY name ORDER BY clowder_server_ping.create DESC) as rank,
+            clowder_server_ping.name,
+            clowder_server_alert.id as alert_id,
+            rank() OVER (PARTITION BY clowder_server_ping.name ORDER BY clowder_server_ping.create DESC) as rank,
             status_passing
           FROM clowder_server_ping
-          WHERE company_id = %s
+          LEFT JOIN clowder_server_alert ON
+                clowder_server_ping.name = clowder_server_alert.name AND
+                clowder_server_ping.company_id = clowder_server_alert.company_id AND
+                clowder_server_alert.notify_at IS NULL
+          WHERE clowder_server_ping.company_id = %s
         ) AS q1
-          WHERE status_passing = false
+          WHERE (status_passing = false OR alert_id IS NOT NULL)
           AND rank = 1;
         ''', [company_id])
         result = cursor.fetchone()

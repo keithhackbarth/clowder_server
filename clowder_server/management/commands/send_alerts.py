@@ -31,3 +31,12 @@ class Command(BaseCommand):
             send_alert(alert.company, alert.name)
             alert.notify_at = None
             alert.save()
+
+
+
+# DELETE FROM clowder_server_alert
+# USING (
+#     SELECT id, rank() OVER (PARTITION BY clowder_server_alert.name, clowder_server_alert.company_id ORDER BY clowder_server_alert.create DESC) as rank
+#     FROM clowder_server_alert
+# ) AS rank
+# WHERE clowder_server_alert.id = rank.id AND rank.rank > 1

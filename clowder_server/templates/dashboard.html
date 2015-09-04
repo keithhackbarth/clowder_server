@@ -65,7 +65,7 @@
             {% with ping_name.list|last as last %}
 
             <li class="service-item list-group-item service
-                {% if last.status_passing %}
+                {% if last.is_passing %}
                 service-passing list-group-item-success
                 {% else %}
                 service-failing list-group-item-danger
@@ -77,7 +77,7 @@
                         {{ ping_name.grouper }}
                       </div>
                       <div class="col-md-4">
-                        {% if last.status_passing %}
+                        {% if last.is_passing %}
                         <strong style="color:green">Passing</strong>
                         {% else %}
                         <strong style="color:red">Failing</strong>
