@@ -1,5 +1,10 @@
   google.load("visualization", "1", {packages:["corechart"]});
 
+  // Reload page
+  function reload() {
+      location.reload(true);
+  }
+
   // Show hide code bubbles
   function toggle(id) {
     $('.code-example').not(id).hide();
@@ -20,12 +25,12 @@
   });
 
   // Delete service by name
-  function delete_service(name) {
+  function delete_service(name, key) {
       $.ajax({
           type: "POST",
-          url: "http://www.clowder.io/delete",
-          data: {"name": name, "api_key": "{{ user.company.public_key }}"},
-          success: location.reload(true)
+          url: "/delete",
+          data: {"name": name, "api_key": key},
+          success: reload
       });
       return false;
   }

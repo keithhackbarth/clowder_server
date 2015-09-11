@@ -99,13 +99,16 @@
                       <div class="col-md-4">
                           <div class="service-controls">
                             <u>Details</u> -
-                            <a href="javascript:delete_service('{{ ping_name.grouper }}')" style="color:red;">Delete</a><br>
+                            <a href="javascript:delete_service('{{ ping_name.grouper }}', '{{ user.company.public_key }}')"
+                                    style="color:red;">
+                                Delete</a><br>
                           </div>
                       </div>
                     </div>
                 </div>
 
             {% endwith %}
+
                 <script type="text/javascript">
                   google.setOnLoadCallback(drawChart);
                   function drawChart() {
@@ -131,6 +134,7 @@
 
                 <div class="service-item-chart" id="chart_div_{{forloop.counter}}" style="width: 900px; height: 500px;"></div>
             </li>
+
         {% endfor %}
         </ul>
 
