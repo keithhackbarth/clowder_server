@@ -309,11 +309,6 @@ clowder.ok({
     </div>
 </aside>
 
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
 <!-- Highlight -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
@@ -324,38 +319,6 @@ clowder.ok({
         hljs.highlightBlock(block);
       });
     });
-</script>
-
-<!-- Custom Theme JavaScript -->
-<script>
-// Closes the sidebar menu
-$("#menu-close").click(function(e) {
-    e.preventDefault();
-    $("#sidebar-wrapper").toggleClass("active");
-});
-
-// Opens the sidebar menu
-$("#menu-toggle").click(function(e) {
-    e.preventDefault();
-    $("#sidebar-wrapper").toggleClass("active");
-});
-
-// Scrolls to the selected menu item on the page
-$(function() {
-    $('a[href*=#]:not([href=#])').click(function() {
-        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
-
-            var target = $(this.hash);
-            target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-            if (target.length) {
-                $('html,body').animate({
-                    scrollTop: target.offset().top
-                }, 1000);
-                return false;
-            }
-        }
-    });
-});
 </script>
 
 {% endblock %}
