@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+<script>
+    $(function () {
+        $('.code-link').click(function () {
+            var language = '.' + $(this).text().toLowerCase(),
+                $parent = $(this).parent();
+            $parent.find('.code-block').hide();
+            $parent.find(language).show();
+        });
+    });
+</script>
+
+<!-- About -->
+<section id="about" class="about">
+    <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <h1>The Original of Clowder</h1>
+            We had a system running 300+ jobs.<br>
+            Each job had unique monitoring requirements.<br>
+            Keeping our code base in sync with our monitoring was killing us.<br>
+            It was like herding cats<br><br>
+
+            We needed a better solution...
+
+            <h3>What if we could automatically monitor jobs?</h3>
+
+            We needed a solution that we didn't have to think about.<br>
+            We could configure our monitoring once in our base class.<br>
+            Then all jobs that inherit from that base class would automatically be monitored.<br><br>
+
+            It should be that simple...
+
+            <h3>So we created Clowder. And we made it open source and free</h3>
+
+            Clowder literally means "herd of cats".<br>
+            Seemed like a fitting name<br>
+            We built it using Django and REST apis.<br>
+            Everything is "push" monitored.<br>
+
+            <h3>Then something cool happened</h3>
+
+            Other people started using our service.<br>
+            For things we didn't expect<br>
+            For example, a node client that replaces Pingdom<br>
+            Or, a Go client that monitors benchmarks on Google Analytics<br>
+            Or, monitoring CPU usage of thousands of servers.
+
+            <h3>Don't be scared</h3>
+
+            If you are used to other services such as Nagios, Dead Man's Door, Pingdom, etc.<br>
+            Clowder might seem a little intimidating at first.<br>
+            It takes a little while to grok.<br>
+            But once you get it, you'll wonder why you ever used anything else.<br>
+            And, if you see a tweak or improvement, then submit a push request!
+
+          </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
+</section>
+
+{% endblock %}

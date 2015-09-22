@@ -92,11 +92,9 @@
                     <li><a href="https://github.com/keithhackbarth/clowder_server">Server</a></li>
                 </ul>
             </li>
-            {% if not request.user.is_authenticated %}
             <li>
-              <a href="/dashboard/">Documentation</a>
+              <a href="/about/">About</a>
             </li>
-            {% endif %}
           </ul>
           <ul class="nav navbar-nav navbar-right">
             {% if request.user.is_authenticated %}
