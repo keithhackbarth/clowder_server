@@ -28,10 +28,11 @@ class APIView(CsrfExemptMixin, View):
         if not name:
             return HttpResponse('name needed')
 
+        # drop old alerts
+        Alert.objects.filter(name=name).delete()
+
         if status == -1:
             send_alert(company, name)
-
-            Alert.objects.filter(name=name).delete()
 
             Alert.objects.create(
                 name=name,
@@ -44,8 +45,6 @@ class APIView(CsrfExemptMixin, View):
                 datetime.datetime.now() +
                 datetime.timedelta(seconds=int(frequency))
             )
-
-            Alert.objects.filter(name=name).delete()
 
             Alert.objects.create(
                 name=name,
