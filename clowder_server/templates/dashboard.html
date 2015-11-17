@@ -5,14 +5,49 @@
 <meta http-equiv="refresh" content="3000"; URL="http://www.clowder.io/dashboard">
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script src="{% static "js/dashboard.js" %}"></script>
+
+<script src="https://fb.me/react-0.14.2.js"></script>
+<script src="https://fb.me/react-dom-0.14.2.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+
+<script>
+
+var PUBLIC_KEY = '{{ user.company.public_key }}';
+var DATA = [
+
+    {% regroup pings by name as ping_names %}
+    {% for ping_name in ping_names %}
+    {% with ping_name.list|last as last %}
+
+    {
+        'name': '{{ping_name.grouper}}',
+        'passing': {{last.is_passing|lower}},
+        'date': '{{last.create|date:"DATETIME_FORMAT"}}',
+        'alert': '{{last.get_closest_alert.notify_at|date:"DATETIME_FORMAT"}}',
+        'table': [
+            ['Time', 'Actual Value'],
+            {% for item in ping_name.list %}
+                [new Date("{{ item.create.isoformat }}"), {{ item.value }}]{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ]
+    }{% if not forloop.last %},{% endif %}
+
+    {% endwith %}
+    {% endfor %}
+];
+</script>
+
+<script type="text/babel" src="{% static "js/dashboard-react.js" %}"></script>
+
 {% endblock %}
 
 {% block content %}
 
-{% regroup pings by name as ping_names %}
 <div class="container">
     <div class="row">
       <div class="col-md-12">
+
+        <div id="example"></div>
 
         {% if not public %}
         <br><br>
@@ -22,7 +57,7 @@
 
         <hr/>
 
-        {% if not ping_names %}
+        {% if not pings %}
         <div class="alert alert-success">
             {% if public %}
                 No public pings for this account yet!
@@ -66,77 +101,7 @@
         </div>
         {% endif %}
 
-        <ul class="list-group">
-        {% for ping_name in ping_names %}
-            {% with ping_name.list|last as last %}
-
-            <li class="service-item list-group-item service
-                {% if last.is_passing %}
-                service-passing list-group-item-success
-                {% else %}
-                service-failing list-group-item-danger
-                {% endif %}">
-
-                <div class="container">
-                    <div class="row">
-                      <div class="col-md-4">
-                        {{ ping_name.grouper }}
-                      </div>
-                      <div class="col-md-4">
-                        {% if last.is_passing %}
-                        <strong style="color:green">Passing</strong>
-                        {% else %}
-                        <strong style="color:red">Failing</strong>
-                        {% endif %}
-                        <br>
-                        Last Ping: {{last.create|date:"DATETIME_FORMAT"}}<br>
-                        {% if last.get_closest_alert.notify_at %}
-                        Next Alert: {{last.get_closest_alert.notify_at|date:"DATETIME_FORMAT"}}
-                        {% else %}
-                        <br>
-                        {% endif %}
-                      </div>
-                      <div class="col-md-4">
-                          <div class="service-controls">
-                            <u>Details</u> -
-                            <a href="javascript:delete_service('{{ ping_name.grouper }}', '{{ user.company.public_key }}')"
-                                    style="color:red;">
-                                Delete</a><br>
-                          </div>
-                      </div>
-                    </div>
-                </div>
-
-            {% endwith %}
-
-                <script type="text/javascript">
-                  google.setOnLoadCallback(drawChart);
-                  function drawChart() {
-                    var data = google.visualization.arrayToDataTable([
-                      ['Datetime', 'Value'],
-                        {% for item in ping_name.list %}
-                          [new Date("{{ item.create.isoformat }}"), {{ item.value }}]
-                          {% if not forloop.last %},{% endif %}
-                        {% endfor %}
-                    ]);
-
-                    var options = {
-                      title: '{{ ping_name.grouper }}',
-                      hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
-                      vAxis: {minValue: 0}
-                    };
-
-                    var chart = new google.visualization.AreaChart(document.getElementById('chart_div_{{forloop.counter}}'));
-                    chart.draw(data, options);
-                    $(document.getElementById('chart_div_{{forloop.counter}}')).hide();
-                  }
-                </script>
-
-                <div class="service-item-chart" id="chart_div_{{forloop.counter}}" style="width: 900px; height: 500px;"></div>
-            </li>
-
-        {% endfor %}
-        </ul>
+        <div id="ping-list"></div>
 
         {% if not public %}
         {% include "walkthrough.html" %}
