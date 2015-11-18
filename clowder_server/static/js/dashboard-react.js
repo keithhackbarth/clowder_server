@@ -59,12 +59,15 @@ var ListItem = React.createClass({
    render: function() {
 
         var listClass = 'service-item list-group-item service',
-            item = this.props.item;
+            item = this.props.item,
+            statusText;
 
         if (item.passing) {
-            listClass += ' service-passing list-group-item-success'
+            listClass += ' service-passing list-group-item-success';
+            statusText = 'Passing';
         } else {
-            listClass += ' service-failing list-group-item-danger'
+            listClass += ' service-failing list-group-item-danger';
+            statusText = 'Failing';
         }
 
         return <li onClick={this.handleClick} className={listClass}>
@@ -74,7 +77,7 @@ var ListItem = React.createClass({
                         {item.name}
                     </div>
                     <div className="col-md-3">
-                        <strong>Passing</strong>
+                        <strong>{statusText}</strong>
                     </div>
                     <div className="col-md-3">
                         {item.date}
