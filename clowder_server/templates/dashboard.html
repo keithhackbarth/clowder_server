@@ -23,7 +23,7 @@ var DATA = [
         'name': '{{ping_name.grouper}}',
         'passing': {{last.is_passing|lower}},
         'date': '{{last.create|date:"DATETIME_FORMAT"}}',
-        'alert': '{{last.get_closest_alert.notify_at|date:"DATETIME_FORMAT"}}',
+        'alert': '{{last.get_closest_alert.notify_at|date:"DATETIME_FORMAT"|default:'n/a'}}',
         'table': [
             ['Time', 'Actual Value'],
             {% for item in ping_name.list %}

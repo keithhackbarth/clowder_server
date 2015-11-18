@@ -27,6 +27,22 @@ var GoogleLineChart = React.createClass({
   }
 });
 
+var DeleteButton = React.createClass({
+
+  render: function () {
+
+      var onClick = "javascript:delete_service('" + this.props.data.name + "', '" + PUBLIC_KEY + "')";
+
+      return <span>
+          <p>Next Alert: { this.props.data.alert }</p>
+          No longer using this alert? _
+          <a href={onClick}>
+            Delete it
+          </a>
+      </span>
+    }
+});
+
 var ListItem = React.createClass({
 
   getInitialState: function() {
@@ -68,6 +84,7 @@ var ListItem = React.createClass({
                     </div>
                 </div>
                 { !this.state.collapsed ? <GoogleLineChart data={item}  /> : null }
+                { !this.state.collapsed ? <DeleteButton data={item}  /> : null }
             </div>
         </li>;
     }
@@ -98,23 +115,3 @@ ReactDOM.render(
   <ListItemWrapper></ListItemWrapper>,
   document.getElementById('ping-list')
 );
-
-
-/*
-
-Last Ping: {{last.create|date:"DATETIME_FORMAT"}}<br>
-{% if last.get_closest_alert.notify_at %}
-Next Alert: {{last.get_closest_alert.notify_at|date:"DATETIME_FORMAT"}}
-{% else %}
-<br>
-{% endif %}
-</div>
-<div class="col-md-4">
-  <div class="service-controls">
-    <u>Details</u> -
-    <a href="javascript:delete_service('{{ ping_name.grouper }}', '{{ user.company.public_key }}')"
-            style="color:red;">
-        Delete</a><br>
-  </div>
-</div>
-*/

@@ -18,7 +18,7 @@ class Command(BaseCommand):
             if not pings_by_name:
                 continue
 
-            max_per_ping = 2000 / len(pings_by_name)
+            max_per_ping = 4000 / len(pings_by_name)
 
             for name in pings_by_name:
                 pings = Ping.objects.filter(company=company, name=name).order_by('-create')[:max_per_ping]
