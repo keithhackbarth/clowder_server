@@ -29,10 +29,12 @@ class APIView(CsrfExemptMixin, View):
             return HttpResponse('name needed')
 
         # drop old alerts
+        already_sent_email = Alert.objects.filter(name=name, notify_at__isnull=True).exists()
         Alert.objects.filter(name=name).delete()
 
         if status == -1:
-            send_alert(company, name)
+            if not already_sent_email:
+                send_alert(company, name)
 
             Alert.objects.create(
                 name=name,
