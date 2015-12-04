@@ -69,6 +69,15 @@ hr.small {
     color: gray;
 }
 
+.navbar.navbar-default {
+    background: none;
+    border: none;
+    margin-bottom: 0;
+}
+
+.navbar-toggle {
+    margin-top: 23px;
+}
 
 /* Side Menu */
 
