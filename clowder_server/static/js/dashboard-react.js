@@ -56,11 +56,23 @@ var ListItem = React.createClass({
     console.log(this.state.collapsed);
   },
 
-   render: function() {
+  dateToString: function (itemDate) {
+        var options = {
+                year: 'numeric', month: 'long', day: 'numeric',
+                hour: '2-digit', minute: '2-digit',
+                hour12: false, timeZoneName: 'short'
+            },
+            dateAsString = new Date(itemDate).toLocaleString('en-US', options);
+
+        return dateAsString;
+  },
+
+  render: function() {
 
         var listClass = 'service-item list-group-item service',
             item = this.props.item,
-            statusText;
+            statusText,
+            dateString = this.dateToString(item.date);
 
         if (item.passing) {
             listClass += ' service-passing list-group-item-success';
@@ -80,7 +92,7 @@ var ListItem = React.createClass({
                         <strong>{statusText}</strong>
                     </div>
                     <div className="col-md-3">
-                        {item.date}
+                        {dateString}
                     </div>
                     <div className="col-md-3 pull-right">
                         +
