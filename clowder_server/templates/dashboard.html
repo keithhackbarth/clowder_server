@@ -2,7 +2,10 @@
 {% load staticfiles %}
 
 {% block header %}
+{% if pings %}
 <meta http-equiv="refresh" content="60"; URL="http://www.clowder.io/dashboard">
+{% endif %}
+
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script src="{% static "js/dashboard.js" %}"></script>
 

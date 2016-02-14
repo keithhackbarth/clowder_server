@@ -43,7 +43,8 @@
                         '&name=' + cleanURL +'&value=$rate" http://www.clowder.com/api');
                     $('#cronJob').html('<br><br>Add the following line to your cron file.' +
                         '<pre>' + cronJob + '</pre>' +
-                        'To edit your cron file. Go to your terminal and type in <pre>crontab -e</pre>');
+                        'To edit your cron file. Go to your terminal and type in <pre>crontab -e</pre>' +
+                        'OR, if you are using AWS, you can use Amazon Lambda and run on a schedule.');
                 };
             </script>
         </div>
