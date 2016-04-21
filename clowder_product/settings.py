@@ -101,7 +101,11 @@ AUTH_USER_MODEL = 'clowder_account.ClowderUser'
 LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_URL = '/'
 
-### COPIED FROM HEROKU ###
+SERVER_EMAIL = 'keith@parkme.com'
+
+ADMINS = (
+    ('Clowder Admin', 'keith@parkme.com'),
+)
 
 # Heroku Settings
 if os.environ.get('PRODUCTION', False):

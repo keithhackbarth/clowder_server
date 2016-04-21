@@ -6,6 +6,9 @@ from clowder_account.models import Company
 from clowder_server.emailer import send_alert
 from clowder_server.models import Alert, Ping
 
+# Prevent overflow of database
+MAXIMUM_RECORDS_PER_ACCOUNT = 4000 #20000
+
 class Command(BaseCommand):
     help = 'Checks and sends alerts'
 
@@ -18,7 +21,7 @@ class Command(BaseCommand):
             if not pings_by_name:
                 continue
 
-            max_per_ping = 4000 / len(pings_by_name)
+            max_per_ping = MAXIMUM_RECORDS_PER_ACCOUNT / len(pings_by_name)
 
             for name in pings_by_name:
                 pings = Ping.objects.filter(company=company, name=name).order_by('-create')[:max_per_ping]
