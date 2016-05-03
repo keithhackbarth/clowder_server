@@ -1,0 +1,26 @@
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.clear {
+    clear: both;
+    float: none;
+}
+
+.api-key,
+#search {
+    margin-top: 40px;
+}
+
+#search-input {
+    width: auto;
+}
+
+.search-label {
+    margin-right: 10px;
+    line-height: 34px;
+}

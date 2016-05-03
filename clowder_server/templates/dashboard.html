@@ -39,6 +39,9 @@ var DATA = [
 
 <script type="text/babel" src="{% static "js/dashboard-react.js" %}"></script>
 
+<!-- CSS -->
+<link rel="stylesheet" type="text/css" href="{% static "css/dashboard.css" %}">
+
 {% endblock %}
 
 {% block content %}
@@ -50,10 +53,14 @@ var DATA = [
         <div id="example"></div>
 
         {% if not public %}
-        <br><br>
-        API Key: <b>{{user.company.public_key}}</b>
-        <br><br>
+            <div class="left api-key">
+                API Key: <b>{{user.company.public_key}}</b>
+            </div>
         {% endif %}
+
+        <div id="search" class="right"></div>
+
+        <div class="clear"></div>
 
         <hr/>
 
