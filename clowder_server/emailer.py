@@ -7,4 +7,4 @@ def send_alert(company, name):
     for user in ClowderUser.objects.filter(company=company):
         subject = 'FAILURE: %s' % (name)
         body = subject
-        send_mail(subject, body, ADMIN_EMAIL, [user.email], fail_silently=False)
+        send_mail(subject, body, ADMIN_EMAIL, [user.email], fail_silently=True)
