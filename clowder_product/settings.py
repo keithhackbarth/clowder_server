@@ -67,16 +67,7 @@ WSGI_APPLICATION = 'clowder_product.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'clowder',
-        'USER': 'postgres',
-        'PASSWORD': 'superpass',
-        'HOST': os.environ.get('DBHOST', 'localhost'),
-        'PORT': '5432',
-    }
-}
+DATABASES = {'default': dj_database_url.config(default='postgres://postgres:superpass@localhost/clowder')}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
