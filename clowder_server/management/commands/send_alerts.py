@@ -7,7 +7,7 @@ from clowder_server.emailer import send_alert
 from clowder_server.models import Alert, Ping
 
 # Prevent overflow of database
-MAXIMUM_RECORDS_PER_ACCOUNT = 4000
+MAXIMUM_RECORDS_PER_ACCOUNT = 10000
 
 class Command(BaseCommand):
     help = 'Checks and sends alerts'
@@ -32,10 +32,9 @@ class Command(BaseCommand):
         alerts = Alert.objects.filter(notify_at__lte=datetime.datetime.now)
         for alert in alerts:
             send_alert(alert.company, alert.name)
+            Ping.objects.filter(company=alert.company, name=alert.name).update(status_passing=False)
             alert.notify_at = None
             alert.save()
-
-
 
 # DELETE FROM clowder_server_alert
 # USING (
