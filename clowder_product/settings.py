@@ -20,18 +20,30 @@ SECRET_KEY = '-n^8m0c1k4u=gki*9gv9met&%0(1zba!qw-8n@2j4qq^yqnl(v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            # insert your TEMPLATE_DIRS here
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
+                # list if you haven't customized them:
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
+            ],
+        },
+    },
+]
 
-TEMPLATE_CONTEXT_PROCESSORS= (
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.media',
-    'django.core.context_processors.static',
-    'django.core.context_processors.tz',
-    'django.contrib.messages.context_processors.messages',
-    'django.core.context_processors.request'
-)
 
 ALLOWED_HOSTS = []
 
@@ -47,6 +59,7 @@ INSTALLED_APPS = (
     'clowder_account',
     'clowder_product',
     'clowder_server',
+    'debug_toolbar',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -57,12 +70,14 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'clowder_product.urls'
 
 WSGI_APPLICATION = 'clowder_product.wsgi.application'
 
+INTERNAL_IPS = ['127.0.0.1', '23.242.4.246']
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases

@@ -37,20 +37,8 @@ class Ping(Base):
     public = models.BooleanField(default=False)
     status_passing = models.BooleanField(default=True)
 
-    def is_passing(self):
-
-        if not self.status_passing:
-            return False
-        elif Alert.objects.filter(
-                    name=self.name,
-                    company=self.company,
-                    notify_at__isnull=True,
-                ).exists():
-            return False
-
-        return True
-
     def get_closest_alert(self):
+        return None
         return Alert.objects.filter(
             name=self.name,
             ip_address=self.ip_address,

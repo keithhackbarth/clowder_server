@@ -24,7 +24,7 @@ var DATA = [
 
     {
         'name': '{{ping_name.grouper}}',
-        'passing': {{last.is_passing|lower}},
+        'passing': {{last.status_passing|lower}},
         'date': '{{last.create|date:"c"}}',
         'alert': '{{last.get_closest_alert.notify_at|date:"DATETIME_FORMAT"|default:'n/a'}}',
         'table': [

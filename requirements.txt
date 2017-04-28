@@ -1,7 +1,8 @@
 APScheduler==3.0.1
-Django==1.8a1
+Django==1.11
 dj-database-url==0.3.0
 dj-static==0.0.6
+django-debug-toolbar==1.7
 django-braces==1.4.0
 django-heroku-sendgridify==0.1.1
 django-ipware==0.1.0
