@@ -1,1 +1,1 @@
-web: gunicorn clowder_product.wsgi --log-file -
+web: waitress-serve --port=$PORT clowder_product.wsgi:application
