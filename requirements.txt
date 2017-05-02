@@ -11,6 +11,7 @@ django-toolbelt==0.0.1
 future==0.14.3
 greenlet==0.4.5
 gunicorn==19.1.1
+newrelic
 psycopg2==2.5.4
 pytesseract==0.1.5
 pytz==2014.10
