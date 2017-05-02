@@ -1,1 +1,1 @@
-web: waitress-serve --port=$PORT clowder_product.wsgi:application
+web: gunicorn clowder_product.wsgi --timeout 20 --keep-alive 5 --log-level debug --log-file -
