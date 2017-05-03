@@ -9,6 +9,9 @@ class Base(models.Model):
 
     class Meta:
         abstract = True
+        index_together = (
+            ('company', 'name'),
+        )
 
     def __str__(self):
         return self.name
