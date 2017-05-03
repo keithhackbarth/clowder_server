@@ -44,7 +44,7 @@ class APIView(CsrfExemptMixin, View):
 
         elif frequency:
             expiration_date = (
-                datetime.datetime.now() +
+                datetime.datetime.now(pytz.utc) +
                 datetime.timedelta(seconds=int(frequency))
             )
 
