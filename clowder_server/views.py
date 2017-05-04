@@ -29,7 +29,11 @@ class APIView(CsrfExemptMixin, View):
             return HttpResponse('name needed')
 
         # drop old alerts
-        alert, created = Alert.objects.get_or_create(company=company, name=name)
+        alert, created = Alert.objects.get_or_create(
+            company=company,
+            name=name,
+            defaults={'ip_address': ip},
+        )
 
         if status == -1:
             if created or alert.notify_at is not None:
