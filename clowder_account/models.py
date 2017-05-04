@@ -59,6 +59,7 @@ class ClowderUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
     language = models.CharField(max_length=1024, blank=True)
     company = models.ForeignKey('clowder_account.Company', null=True)
+    allow_email_notifications = models.BooleanField(default=True)
 
     USERNAME_FIELD = 'email'
 

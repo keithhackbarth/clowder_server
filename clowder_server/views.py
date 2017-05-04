@@ -29,31 +29,23 @@ class APIView(CsrfExemptMixin, View):
             return HttpResponse('name needed')
 
         # drop old alerts
-        already_sent_email = Alert.objects.filter(company=company, name=name, notify_at__isnull=True).exists()
-        Alert.objects.filter(company=company, name=name).delete()
+        alert, created = Alert.objects.get_or_create(company=company, name=name)
 
         if status == -1:
-            if not already_sent_email:
+            if created or alert.notify_at is not None:
                 send_alert(company, name)
-
-            Alert.objects.create(
-                name=name,
-                company=company,
-                ip_address=ip,
-            )
+            alert.notify_at = None
 
         elif frequency:
             expiration_date = (
                 datetime.datetime.now(pytz.utc) +
                 datetime.timedelta(seconds=int(frequency))
             )
+            alert.notify_at = expiration_date
 
-            Alert.objects.create(
-                name=name,
-                company=company,
-                notify_at=expiration_date,
-                ip_address=ip,
-            )
+        # save alert updates
+        alert.ip_address = ip
+        alert.save()
 
         Ping.objects.create(
             name=name,

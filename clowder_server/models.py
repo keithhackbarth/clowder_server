@@ -9,9 +9,6 @@ class Base(models.Model):
 
     class Meta:
         abstract = True
-        index_together = (
-            ('company', 'name'),
-        )
 
     def __str__(self):
         return self.name
@@ -26,6 +23,10 @@ class Alert(Base):
 
     notify_at = models.DateTimeField(null=True, blank=True)
 
+    class Meta:
+        unique_together = (
+            ('company', 'name'),
+        )
 
 class Ping(Base):
     """
@@ -39,6 +40,11 @@ class Ping(Base):
     value = models.FloatField()
     public = models.BooleanField(default=False)
     status_passing = models.BooleanField(default=True)
+
+    class Meta:
+        index_together = (
+            ('company', 'name'),
+        )
 
     def get_closest_alert(self):
         return None
