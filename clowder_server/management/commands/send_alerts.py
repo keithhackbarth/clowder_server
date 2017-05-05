@@ -1,4 +1,5 @@
 import datetime
+import pytz
 
 from django.core.management.base import BaseCommand, CommandError
 
@@ -15,6 +16,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         # delete old pings
+        print("Deleting old pings")
         for company in Company.objects.all():
             pings_by_name = Ping.objects.filter(company=company).distinct('name')
 
@@ -29,7 +31,8 @@ class Command(BaseCommand):
                 Ping.objects.filter(company=company, name=name).exclude(pk__in=pings).delete()
 
         # send alerts
-        alerts = Alert.objects.filter(notify_at__lte=datetime.datetime.now)
+        print("Sending alerts")
+        alerts = Alert.objects.filter(notify_at__lte=datetime.datetime.now(pytz.utc))
         for alert in alerts:
             send_alert(alert.company, alert.name)
             Ping.objects.filter(company=alert.company, name=alert.name).update(status_passing=False)

@@ -37,12 +37,15 @@ class Company(models.Model):
     public_key = ShortUUIDField(auto=True, db_index=True, unique=True)
     secret_key = ShortUUIDField(auto=True)
 
-    def __unicode__(self):
+    def __str__(self):
 
-        if self.name:
-            name = self.name
-        else:
-            name = ClowderUser.objects.filter(company=self).first().email
+        try:
+            if self.name:
+                name = self.name
+            else:
+                name = ClowderUser.objects.filter(company=self).first().email
+        except AttributeError:
+            return 'ERROR'
 
         return '%s (%s)' % (name, self.public_key)
 

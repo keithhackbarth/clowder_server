@@ -8,4 +8,6 @@ admin.site.register(Company)
 
 @admin.register(Ping)
 class PingAdmin(admin.ModelAdmin):
+    search_fields = ['name']
+    list_display = ('name', 'status_passing')
     list_filter = ('company',)
