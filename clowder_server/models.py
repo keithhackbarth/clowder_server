@@ -61,17 +61,12 @@ class Ping(Base):
         SELECT COUNT(*) FROM (
           SELECT
             clowder_server_ping.name,
-            clowder_server_alert.id as alert_id,
             rank() OVER (PARTITION BY clowder_server_ping.name ORDER BY clowder_server_ping.create DESC) as rank,
             status_passing
           FROM clowder_server_ping
-          LEFT JOIN clowder_server_alert ON
-                clowder_server_ping.name = clowder_server_alert.name AND
-                clowder_server_ping.company_id = clowder_server_alert.company_id AND
-                clowder_server_alert.notify_at IS NULL
           WHERE clowder_server_ping.company_id = %s
         ) AS q1
-          WHERE status_passing = true AND alert_id IS NULL
+          WHERE status_passing = true
           AND rank = 1;
         ''', [company_id])
         result = cursor.fetchone()
@@ -84,17 +79,12 @@ class Ping(Base):
         SELECT COUNT(*) FROM (
           SELECT
             clowder_server_ping.name,
-            clowder_server_alert.id as alert_id,
             rank() OVER (PARTITION BY clowder_server_ping.name ORDER BY clowder_server_ping.create DESC) as rank,
             status_passing
           FROM clowder_server_ping
-          LEFT JOIN clowder_server_alert ON
-                clowder_server_ping.name = clowder_server_alert.name AND
-                clowder_server_ping.company_id = clowder_server_alert.company_id AND
-                clowder_server_alert.notify_at IS NULL
           WHERE clowder_server_ping.company_id = %s
         ) AS q1
-          WHERE (status_passing = false OR alert_id IS NOT NULL)
+          WHERE status_passing = false
           AND rank = 1;
         ''', [company_id])
         result = cursor.fetchone()
