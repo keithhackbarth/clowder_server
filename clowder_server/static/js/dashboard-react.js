@@ -106,7 +106,7 @@ var stateContainer = {
 };
 
 var doSearch = function() {
-    var inputVal = document.getElementById('search-input').value,
+    var inputVal = document.getElementById('search-input').value.toLowerCase(),
         searchData = [];
 
     DATA.map(function(el) {
