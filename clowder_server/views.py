@@ -22,6 +22,7 @@ class APIView(CsrfExemptMixin, View):
         api_key = request.POST.get('api_key')
         status = int(request.POST.get('status', 1))
         public = bool(request.POST.get('public'))
+        expire = request.POST.get('expire')
 
         company = Company.objects.get(public_key=api_key)
         ip = get_real_ip(request) or '127.0.0.1'
@@ -29,12 +30,14 @@ class APIView(CsrfExemptMixin, View):
         if not name:
             return HttpResponse('name needed')
 
-        # drop old alerts
         alert, created = Alert.objects.get_or_create(
             company=company,
             name=name,
             defaults={'ip_address': ip},
         )
+
+        if expire:
+            alert.expire_at = datetime.datetime.strptime(expire, "%Y%m%dT%H%M%SZ")
 
         if status == -1:
             if created or alert.notify_at is not None:

@@ -22,6 +22,7 @@ class Alert(Base):
     """
 
     notify_at = models.DateTimeField(null=True, blank=True)
+    expire_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         unique_together = (

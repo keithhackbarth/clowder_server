@@ -39,6 +39,13 @@ class Command(BaseCommand):
             alert.notify_at = None
             alert.save()
 
+        # delete expired alerts
+        print("Sending alerts")
+        alerts = Alert.objects.filter(expire_at__lte=datetime.datetime.now(pytz.utc))
+        for alert in alerts:
+            Ping.objects.filter(company=alert.company, name=alert.name).delete()
+            alert.delete()
+
 # DELETE FROM clowder_server_alert
 # USING (
 #     SELECT id, rank() OVER (PARTITION BY clowder_server_alert.name, clowder_server_alert.company_id ORDER BY clowder_server_alert.create DESC) as rank
