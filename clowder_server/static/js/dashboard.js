@@ -9,7 +9,7 @@
   function toggle(id) {
     $('.code-example').not(id).hide();
     $(id).toggle();
-  };
+  }
 
   // Submit form without redirect
   $(function () {
@@ -30,7 +30,10 @@
           type: "POST",
           url: "/delete",
           data: {"name": name, "api_key": key},
-          success: reload
+          success: function () {
+              var text = 'Alert has been deleted. Refresh to see update. ' + name;
+              $("#alert").text(text).slideDown(2000).delay(2000).slideUp(2000);
+          }
       });
       return false;
   }

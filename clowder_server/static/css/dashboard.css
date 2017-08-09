@@ -11,6 +11,18 @@
     float: none;
 }
 
+#alert {
+    display: none;
+    width: 100%;
+    background-color: #d9534f;
+    color: white;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    padding: 20px;
+    z-index: 1999;
+}
+
 .api-key,
 #search {
     margin-top: 40px;
