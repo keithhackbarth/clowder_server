@@ -87,7 +87,9 @@ class ClowderUser(AbstractBaseUser, PermissionsMixin):
 
 class ClowderUserAdmin(admin.ModelAdmin):
     list_display = ('email', 'public_key', 'get_full_name', 'language', 'number_of_pings')
-    raw_id_fields = ("company",)
+    raw_id_fields = ('company',)
+    list_select_related = ('company',)
+    list_per_page = 50
 
     def public_key(self, obj):
         return obj.company.public_key
