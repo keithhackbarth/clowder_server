@@ -3,9 +3,10 @@ import datetime
 from ipware.ip import get_real_ip
 import pytz
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.contrib.auth import decorators
 from django.views.generic import TemplateView, View
+from django.core import serializers
 
 from clowder_account.models import Company
 from clowder_server.emailer import send_alert
@@ -61,6 +62,15 @@ class APIView(CsrfExemptMixin, View):
         )
         return HttpResponse('ok')
 
+    def get(self, request):
+        name = request.GET.get('name')
+        api_key = request.GET.get('api_key')
+        if not all((api_key, name)):
+            return HttpResponseBadRequest('Both name and api_key are required')
+        company = Company.objects.get(public_key=api_key)
+        objects = Ping.objects.filter(company=company, name__contains=name).order_by('name', 'create')
+        data = serializers.serialize('json', objects, fields=('name', 'value', 'status_passing'))
+        return HttpResponse(data, content_type='application/json')
 
 class DashboardView(LoginRequiredMixin, TemplateView):
 
