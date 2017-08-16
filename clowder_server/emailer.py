@@ -6,9 +6,9 @@ from clowder_account.models import ClowderUser
 
 ADMIN_EMAIL = 'admin@clowder.io'
 
-def send_alert(company, name):
+def send_alert(company_id, name):
     slack_sent = False
-    for user in ClowderUser.objects.filter(company=company, allow_email_notifications=True):
+    for user in ClowderUser.objects.filter(company_id=company_id, allow_email_notifications=True):
         subject = 'FAILURE: %s' % (name)
         body = subject
         if user.company_id == 86 and not slack_sent:
