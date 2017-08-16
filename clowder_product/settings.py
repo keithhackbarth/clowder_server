@@ -83,6 +83,7 @@ INTERNAL_IPS = ['127.0.0.1', '23.242.4.246']
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
 DATABASES = {'default': dj_database_url.config(default='postgres://postgres:superpass@localhost/clowder')}
+DATABASES['default']['CONN_MAX_AGE'] = 500
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
