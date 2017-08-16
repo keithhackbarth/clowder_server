@@ -1,12 +1,16 @@
-from braces.views import CsrfExemptMixin, LoginRequiredMixin
+#!/usr/bin/env python3.5
+# -*- coding: utf-8 -*-
+# pylint: disable=no-member,line-too-long
+
 import datetime
-from ipware.ip import get_real_ip
 import pytz
 
+from braces.views import CsrfExemptMixin, LoginRequiredMixin
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.contrib.auth import decorators
 from django.views.generic import TemplateView, View
 from django.core import serializers
+from ipware.ip import get_real_ip
 
 from clowder_account.models import Company
 from clowder_server.emailer import send_alert
@@ -24,14 +28,19 @@ class APIView(CsrfExemptMixin, View):
         public = bool(request.POST.get('public'))
         expire = request.POST.get('expire')
 
-        company = Company.objects.get(public_key=api_key)
+        # Cache most common
+        # TODO: Eventually rename company so that this is primary key
+        if api_key == 'GVMN3bNgw54baRyjFjjB7C':
+            company_id = 86
+        else:
+            company_id = Company.objects.get(public_key=api_key).id
         ip = get_real_ip(request) or '127.0.0.1'
 
         if not name:
             return HttpResponse('name needed')
 
         alert, created = Alert.objects.get_or_create(
-            company=company,
+            company_id=company_id,
             name=name,
             defaults={'ip_address': ip},
         )
@@ -41,7 +50,7 @@ class APIView(CsrfExemptMixin, View):
 
         if status == -1:
             if created or alert.notify_at is not None:
-                send_alert(company, name)
+                send_alert(company_id, name)
             alert.notify_at = None
 
         elif frequency:
@@ -57,7 +66,7 @@ class APIView(CsrfExemptMixin, View):
 
         Ping.objects.create(
             name=name,
-            company=company,
+            company_id=company_id,
             value=value,
             ip_address=ip,
             status_passing=(status == 1),
