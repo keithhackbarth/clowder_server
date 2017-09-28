@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 var GoogleLineChart = React.createClass({
     render: function(){
         return React.DOM.div({
@@ -12,7 +14,13 @@ var GoogleLineChart = React.createClass({
         this.drawCharts();
     },
     drawCharts: function(){
-        var data = google.visualization.arrayToDataTable(this.props.data.table);
+
+        var name = this.props.data.name;
+
+        var historicalData = getHistoricalData(name);
+        historicalData = transformHistoricalData(historicalData);
+
+        var tableData = google.visualization.arrayToDataTable(historicalData);
         var options = {
             trendlines: { 0: {
                 labelInLegend: 'Trend line',
@@ -21,9 +29,10 @@ var GoogleLineChart = React.createClass({
         };
 
         var chart = new google.visualization.LineChart(
-            document.getElementById(this.props.data.name.replace(' ', '-'))
+            document.getElementById(name.replace(' ', '-'))
         );
-        chart.draw(data, options);
+        chart.draw(tableData, options);
+
     }
 });
 

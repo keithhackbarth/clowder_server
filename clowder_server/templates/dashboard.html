@@ -18,24 +18,15 @@
 var PUBLIC_KEY = '{{ user.company.public_key }}';
 var DATA = [
 
-    {% regroup pings by name as ping_names %}
-    {% for ping_name in ping_names %}
-    {% with ping_name.list|last as last %}
+    {% for ping in pings %}
 
     {
-        'name': '{{ping_name.grouper}}',
-        'passing': {{last.status_passing|lower}},
-        'date': '{{last.create|date:"c"}}',
-        'alert': '{{last.get_closest_alert.notify_at|date:"DATETIME_FORMAT"|default:'n/a'}}',
-        'table': [
-            ['Time', 'Actual Value'],
-            {% for item in ping_name.list %}
-                [new Date("{{ item.create.isoformat }}"), {{ item.value }}]{% if not forloop.last %},{% endif %}
-            {% endfor %}
-        ]
+        'name': '{{ping.name}}',
+        'passing': {{ping.status_passing|lower}},
+        'date': '{{ping.create|date:"c"}}',
+        'alert': 'n/a',
     }{% if not forloop.last %},{% endif %}
 
-    {% endwith %}
     {% endfor %}
 ];
 </script>

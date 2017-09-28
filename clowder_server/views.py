@@ -6,10 +6,9 @@ import datetime
 import pytz
 
 from braces.views import CsrfExemptMixin, LoginRequiredMixin
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 from django.contrib.auth import decorators
 from django.views.generic import TemplateView, View
-from django.core import serializers
 from ipware.ip import get_real_ip
 
 from clowder_account.models import Company
@@ -64,7 +63,7 @@ class APIView(CsrfExemptMixin, View):
         alert.ip_address = ip
         alert.save()
 
-        Ping.objects.create(
+        ping = Ping.objects.create(
             name=name,
             company_id=company_id,
             value=value,
@@ -72,40 +71,54 @@ class APIView(CsrfExemptMixin, View):
             status_passing=(status == 1),
             public=public,
         )
-        return HttpResponse('ok')
+        return HttpResponse(ping, safe=False)
 
     def get(self, request):
+
         name = request.GET.get('name')
         api_key = request.GET.get('api_key')
+
         if not all((api_key, name)):
             return HttpResponseBadRequest('Both name and api_key are required')
+
         company = Company.objects.get(public_key=api_key)
-        objects = Ping.objects.filter(company=company, name__contains=name).order_by('name', 'create')
-        data = serializers.serialize('json', objects, fields=('name', 'value', 'status_passing'))
-        return HttpResponse(data, content_type='application/json')
+        pings = Ping.objects.filter(company=company, name=name) \
+            .order_by('name', '-create')
+
+        table = []
+        for ping in pings:
+            table.append([ping.create.isoformat(), ping.value])
+
+        return JsonResponse(table, safe=False)
+
 
 class DashboardView(LoginRequiredMixin, TemplateView):
 
     template_name = "dashboard.html"
 
-    def _pings(self, user):
-        return Ping.objects.filter(company=user.company).order_by('name', 'create')
-
-    def _total_num_pings(self, user):
-        return self._pings(user).distinct('name').count()
+    @staticmethod
+    def _pings(user):
+        return list(
+            Ping.objects.filter(company=user.company) \
+                .order_by('name', '-create') \
+                .distinct('name')
+        )
 
     def get(self, request, *args, **kwargs):
+        pings = self._pings(request.user)
+
         context = {
-            'pings': self._pings(request.user),
+            'pings': pings,
+            'total_num_pings': len(pings),
         }
-        total_num_pings = self._total_num_pings(request.user)
-        if total_num_pings:
-            context['num_passing'] = Ping.num_passing(request.user.company_id)
-            context['num_failing'] = Ping.num_failing(request.user.company_id)
-            context['total_num_pings'] = total_num_pings
+
+        if pings:
+            context['num_passing'] = len([ping for ping in pings if ping.status_passing])
+            context['num_failing'] = context['total_num_pings'] - context['num_passing']
             context['percent_passing'] = round(
-                (float(context['num_passing']) / float(total_num_pings)) * 100
+                context['num_passing'] / context['total_num_pings'] * 100
             )
+
         return self.render_to_response(context)
 
 

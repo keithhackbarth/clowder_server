@@ -38,6 +38,28 @@
       return false;
   }
 
+  // Get historical data
+  function getHistoricalData(name) {
+      var url = '/api/?' + $.param({'name': name, 'api_key': PUBLIC_KEY});
+
+      return $.parseJSON($.ajax({
+          type: "GET",
+          url: url,
+          async: false
+      }).responseText);
+
+  }
+
+  // Transform historical data
+  function transformHistoricalData(historicalData) {
+
+      for (var i = 0; i < historicalData.length; i++) {
+          historicalData[i][0] = new Date(historicalData[i][0]);
+      }
+      historicalData.unshift(['Time', 'Actual Value']);
+      return historicalData;
+  }
+
   // Let users show/hide charts
   $(document).ready(function() {
     $(".service-item").click(function() {

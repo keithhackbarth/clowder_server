@@ -8,7 +8,7 @@ from clowder_server.emailer import send_alert
 from clowder_server.models import Alert, Ping
 
 # Prevent overflow of database
-MAXIMUM_RECORDS_PER_ACCOUNT = 50000
+MAXIMUM_RECORDS_PER_ACCOUNT = 100000
 
 class Command(BaseCommand):
     help = 'Checks and sends alerts'

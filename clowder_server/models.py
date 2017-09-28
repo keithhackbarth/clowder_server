@@ -43,50 +43,10 @@ class Ping(Base):
     status_passing = models.BooleanField(default=True)
 
     class Meta:
+        indexes = [
+            models.Index(fields=['company', 'name', '-create']),
+        ]
+
         index_together = (
             ('company', 'name'),
         )
-
-    def get_closest_alert(self):
-        return None
-        return Alert.objects.filter(
-            name=self.name,
-            ip_address=self.ip_address,
-            company=self.company,
-        ).order_by('notify_at').first()
-
-    @classmethod
-    def num_passing(cls, company_id):
-        cursor = connection.cursor()
-        cursor.execute('''
-        SELECT COUNT(*) FROM (
-          SELECT
-            clowder_server_ping.name,
-            rank() OVER (PARTITION BY clowder_server_ping.name ORDER BY clowder_server_ping.create DESC) as rank,
-            status_passing
-          FROM clowder_server_ping
-          WHERE clowder_server_ping.company_id = %s
-        ) AS q1
-          WHERE status_passing = true
-          AND rank = 1;
-        ''', [company_id])
-        result = cursor.fetchone()
-        return result[0] if result else 0
-
-    @classmethod
-    def num_failing(cls, company_id):
-        cursor = connection.cursor()
-        cursor.execute('''
-        SELECT COUNT(*) FROM (
-          SELECT
-            clowder_server_ping.name,
-            rank() OVER (PARTITION BY clowder_server_ping.name ORDER BY clowder_server_ping.create DESC) as rank,
-            status_passing
-          FROM clowder_server_ping
-          WHERE clowder_server_ping.company_id = %s
-        ) AS q1
-          WHERE status_passing = false
-          AND rank = 1;
-        ''', [company_id])
-        result = cursor.fetchone()
-        return result[0] if result else 0
