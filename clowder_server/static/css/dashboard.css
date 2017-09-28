@@ -36,3 +36,7 @@
     margin-right: 10px;
     line-height: 34px;
 }
+
+.pull-right {
+    text-align: center;
+}

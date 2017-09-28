@@ -4,7 +4,7 @@ var GoogleLineChart = React.createClass({
     render: function(){
         return React.DOM.div({
               id: this.props.data.name.replace(' ', '-'),
-              style: {width: '900px', height: '500px', margin: '25px'}
+              style: {width: '95%', height: '500px'}
           });
     },
     componentDidMount: function(){
