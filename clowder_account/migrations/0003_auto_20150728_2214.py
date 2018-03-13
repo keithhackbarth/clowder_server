@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='clowderuser',
             name='company',
-            field=models.ForeignKey(to='clowder_account.Company', null=True),
+            field=models.ForeignKey(to='clowder_account.Company', null=True, on_delete=models.CASCADE),
         ),
         migrations.RunSQL("""
         INSERT INTO clowder_account_company (public_key, secret_key)

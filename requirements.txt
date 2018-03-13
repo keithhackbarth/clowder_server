@@ -1,9 +1,9 @@
 APScheduler==3.0.1
-Django==1.11
+Django==2.0.2
 dj-database-url==0.3.0
 dj-static==0.0.6
 django-debug-toolbar==1.7
-django-braces==1.4.0
+django-braces==1.12.0
 django-heroku-sendgridify==0.1.1
 django-ipware==0.1.0
 https://github.com/mkouhei/django-shortuuidfield/archive/805736baecbd54e325383891c32d9124e68cd90f.zip
@@ -12,10 +12,10 @@ future==0.14.3
 greenlet==0.4.5
 gunicorn==19.1.1
 newrelic
-psycopg2==2.5.4
+psycopg2
 pytesseract==0.1.5
-pytz==2014.10
-requests==2.5.1
+pytz>=2014.10
+requests>=2.5.1
 shortuuid==0.4.2
 six==1.9.0
 static3==0.5.1

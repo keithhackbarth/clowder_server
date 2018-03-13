@@ -15,12 +15,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='alert',
             name='company',
-            field=models.ForeignKey(to='clowder_account.Company', null=True),
+            field=models.ForeignKey(to='clowder_account.Company', null=True, on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='ping',
             name='company',
-            field=models.ForeignKey(to='clowder_account.Company', null=True),
+            field=models.ForeignKey(to='clowder_account.Company', null=True, on_delete=models.CASCADE),
         ),
         migrations.RunSQL("""
         UPDATE clowder_server_ping SET company_id = clowder_account_clowderuser.company_id

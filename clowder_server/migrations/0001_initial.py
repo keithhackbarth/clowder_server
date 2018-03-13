@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('ip_address', models.GenericIPAddressField()),
                 ('create', models.DateTimeField(auto_now_add=True)),
                 ('notify_at', models.DateTimeField(null=True, blank=True)),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
                 'abstract': False,
@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
                 ('create', models.DateTimeField(auto_now_add=True)),
                 ('value', models.FloatField()),
                 ('status_passing', models.BooleanField(default=True)),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
                 'abstract': False,

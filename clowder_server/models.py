@@ -4,7 +4,7 @@ from django.db import models
 class Base(models.Model):
     name = models.CharField(max_length=200)
     ip_address = models.GenericIPAddressField()
-    company = models.ForeignKey('clowder_account.Company', null=True)
+    company = models.ForeignKey('clowder_account.Company', null=True, on_delete=models.CASCADE)
     create = models.DateTimeField(auto_now_add=True)
 
     class Meta:

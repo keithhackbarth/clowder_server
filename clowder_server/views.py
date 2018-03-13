@@ -95,6 +95,7 @@ class APIView(CsrfExemptMixin, View):
 class DashboardView(LoginRequiredMixin, TemplateView):
 
     template_name = "dashboard.html"
+    public = False
 
     @staticmethod
     def _pings(user):
@@ -110,6 +111,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context = {
             'pings': pings,
             'total_num_pings': len(pings),
+            'public': self.public,
         }
 
         if pings:
@@ -122,36 +124,18 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         return self.render_to_response(context)
 
 
-class PublicView(TemplateView):
+class PublicView(DashboardView):
 
     template_name = "dashboard.html"
+    public = True
 
-    def _pings(self, company):
-        return Ping.objects.filter(
-            company=company,
-            public=True
-        ).order_by('name', 'create')
-
-    def _total_num_pings(self, company):
-        return self._pings(company).distinct('name').count()
-
-    def get(self, request, secret_key):
-
-        company = Company.objects.get(secret_key=secret_key)
-
-        context = {
-            'pings': self._pings(company),
-            'public': True
-        }
-        total_num_pings = self._total_num_pings(company)
-        if total_num_pings:
-            context['num_passing'] = Ping.num_passing(company.id)
-            context['num_failing'] = Ping.num_failing(company.id)
-            context['total_num_pings'] = total_num_pings
-            context['percent_passing'] = round(
-                (float(context['num_passing']) / float(total_num_pings)) * 100
-            )
-        return self.render_to_response(context)
+    @staticmethod
+    def _pings(user):
+        return list(
+            Ping.objects.filter(company=user.company, public=True) \
+                .order_by('name', '-create') \
+                .distinct('name')
+        )
 
 
 class DeleteView(CsrfExemptMixin, View):
