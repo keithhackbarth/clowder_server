@@ -24,20 +24,6 @@
     });
   });
 
-  // Delete service by name
-  function delete_service(name, key) {
-      $.ajax({
-          type: "POST",
-          url: "/delete",
-          data: {"name": name, "api_key": key},
-          success: function () {
-              var text = 'Alert has been deleted. Refresh to see update. ' + name;
-              $("#alert").text(text).slideDown(2000).delay(2000).slideUp(2000);
-          }
-      });
-      return false;
-  }
-
   // Get historical data
   function getHistoricalData(name) {
       var url = '/api/?' + $.param({'name': name, 'api_key': PUBLIC_KEY});

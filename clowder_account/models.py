@@ -7,8 +7,6 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
-from clowder_server.models import Ping
-
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None):
         if not email:
@@ -45,9 +43,9 @@ class Company(models.Model):
             else:
                 name = ClowderUser.objects.filter(company=self).first().email
         except AttributeError:
-            return 'ERROR'
+            return 'ERROR: Company is not currently linked to a user'
 
-        return '%s (%s)' % (name, self.public_key)
+        return '%s: %s (%s)' % (self.pk, name, self.public_key)
 
 class ClowderUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=30, blank=True)
@@ -84,17 +82,3 @@ class ClowderUser(AbstractBaseUser, PermissionsMixin):
         Sends an email to this User.
         """
         send_mail(subject, message, from_email, [self.email], **kwargs)
-
-class ClowderUserAdmin(admin.ModelAdmin):
-    list_display = ('email', 'public_key', 'get_full_name', 'language', 'number_of_pings')
-    raw_id_fields = ('company',)
-    list_select_related = ('company',)
-    list_per_page = 50
-
-    def public_key(self, obj):
-        return obj.company.public_key
-    public_key.allow_tags = True
-
-    def number_of_pings(self, obj):
-        return '%s' % (Ping.objects.filter(company=obj.company).count())
-    number_of_pings.allow_tags = True

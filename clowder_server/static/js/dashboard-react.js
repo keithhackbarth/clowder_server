@@ -36,24 +36,13 @@ var GoogleLineChart = React.createClass({
     }
 });
 
-var DeleteButton = React.createClass({
-    render: function () {
-        var onClick = "javascript:delete_service('" + this.props.data.name + "', '" + PUBLIC_KEY + "')";
-
-        return <span>
-            <p>Next Alert: { this.props.data.alert }</p>
-                No longer using this alert?&nbsp;
-            <a href={onClick}>
-                Delete it
-            </a>
-        </span>
-      }
-});
 
 var ListItem = React.createClass({
+
     getInitialState: function() {
         return {
-            collapsed: true
+            collapsed: true,
+            visible: true,
         };
     },
 
@@ -73,11 +62,40 @@ var ListItem = React.createClass({
         return dateAsString;
     },
 
+    deleteAPI: function () {
+
+        $.ajax({
+            type: "POST",
+            url: "/delete",
+            data: {"name": this.props.item.name, "api_key": PUBLIC_KEY},
+            success: function () {}
+        });
+
+        this.state.visible = false;
+    },
+
+    deleteButton: function () {
+        return (
+            <span>
+                <p>Next Alert: { this.props.item.alert }</p>
+                    No longer using this alert?&nbsp;
+                <a onClick={this.deleteAPI}>
+                    Delete it
+                </a>
+            </span>
+        );
+    },
+
     render: function() {
         var listClass = 'service-item list-group-item service',
             item = this.props.item,
             statusText,
             dateString = this.dateToString(item.date);
+
+
+        if (!this.state.visible) {
+            return (null);
+        }
 
         if (item.passing) {
             listClass += ' service-passing list-group-item-success';
@@ -104,7 +122,7 @@ var ListItem = React.createClass({
                     </div>
                 </div>
                 { !this.state.collapsed ? <GoogleLineChart data={item}  /> : null }
-                { !this.state.collapsed ? <DeleteButton data={item}  /> : null }
+                { !this.state.collapsed ? <this.deleteButton data={item}  /> : null }
             </div>
         </li>;
       }
