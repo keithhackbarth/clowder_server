@@ -34,7 +34,7 @@ class Command(BaseCommand):
         print("Sending alerts")
         alerts = Alert.objects.filter(notify_at__lte=datetime.datetime.now(pytz.utc))
         for alert in alerts:
-            send_alert(alert.company_id, alert.name)
+            send_alert(alert)
             Ping.objects.filter(company=alert.company, name=alert.name).update(status_passing=False)
             alert.notify_at = None
             alert.save()

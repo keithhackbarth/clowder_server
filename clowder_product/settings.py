@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 import os
 import dj_database_url
-from sendgridify import sendgridify
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -123,12 +122,15 @@ ADMINS = (
     ('Clowder Admin', 'keith@parkme.com'),
 )
 
+EMAIL_HOST = os.environ.get('MAILGUN_SMTP_SERVER', '')
+EMAIL_PORT = os.environ.get('MAILGUN_SMTP_PORT', '')
+EMAIL_HOST_USER = os.environ.get('MAILGUN_SMTP_LOGIN', '')
+EMAIL_HOST_PASSWORD = os.environ.get('MAILGUN_SMTP_PASSWORD', '')
+
 # Heroku Settings
 if os.environ.get('PRODUCTION', False):
 
     DEBUG = False
-
-    EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_PORT, EMAIL_USE_TLS = sendgridify()
 
     # Honor the 'X-Forwarded-Proto' header for request.is_secure()
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

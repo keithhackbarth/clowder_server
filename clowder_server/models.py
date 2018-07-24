@@ -23,6 +23,7 @@ class Alert(Base):
 
     notify_at = models.DateTimeField(null=True, blank=True)
     expire_at = models.DateTimeField(null=True, blank=True)
+    send_email = models.BooleanField(default=False)
 
     class Meta:
         unique_together = (

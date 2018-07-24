@@ -25,6 +25,7 @@ class APIView(CsrfExemptMixin, View):
         api_key = request.POST.get('api_key')
         status = int(request.POST.get('status', 1))
         public = bool(request.POST.get('public'))
+        send_email = bool(request.POST.get('send_email'))
         expire = request.POST.get('expire')
 
         # Cache most common
@@ -41,7 +42,7 @@ class APIView(CsrfExemptMixin, View):
         alert, created = Alert.objects.get_or_create(
             company_id=company_id,
             name=name,
-            defaults={'ip_address': ip},
+            defaults={'ip_address': ip, 'send_email': send_email},
         )
 
         if expire:
@@ -49,7 +50,7 @@ class APIView(CsrfExemptMixin, View):
 
         if status == -1:
             if created or alert.notify_at is not None:
-                send_alert(company_id, name)
+                send_alert(alert)
             alert.notify_at = None
 
         elif frequency:
