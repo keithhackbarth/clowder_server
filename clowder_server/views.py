@@ -93,21 +93,21 @@ class APIView(CsrfExemptMixin, View):
         return JsonResponse(table, safe=False)
 
 
-class DashboardView(LoginRequiredMixin, TemplateView):
+class DashboardView(TemplateView):
 
     template_name = "dashboard.html"
     public = False
 
     @staticmethod
-    def _pings(user):
+    def _pings(request, *args, **kwargs):
         return list(
-            Ping.objects.filter(company=user.company) \
+            Ping.objects.filter(company=request.user.company) \
                 .order_by('name', '-create') \
                 .distinct('name')
         )
 
     def get(self, request, *args, **kwargs):
-        pings = self._pings(request.user)
+        pings = self._pings(request, *args, **kwargs)
 
         context = {
             'pings': pings,
@@ -125,15 +125,18 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         return self.render_to_response(context)
 
 
+class PrivateView(LoginRequiredMixin, DashboardView):
+    pass
+
 class PublicView(DashboardView):
 
     template_name = "dashboard.html"
     public = True
 
     @staticmethod
-    def _pings(user):
+    def _pings(request, *args, **kwargs):
         return list(
-            Ping.objects.filter(company=user.company, public=True) \
+            Ping.objects.filter(company__secret_key=kwargs['secret_key'], public=True) \
                 .order_by('name', '-create') \
                 .distinct('name')
         )

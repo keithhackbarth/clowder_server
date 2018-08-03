@@ -57,12 +57,13 @@
 
     </script>
 
-    {% block header %}{% endblock %}
+    {% block head %}{% endblock %}
 
 </head>
 
 <body>
 
+    {% block header %}
       <!-- Static navbar -->
       <nav class="navbar navbar-default">
         <div class="container">
@@ -111,6 +112,7 @@
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
       </nav>
+    {% endblock %}
 
     {% block content %}
     {% endblock %}

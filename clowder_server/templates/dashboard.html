@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
-{% block header %}
+{% block head %}
 {% if pings %}
 <meta http-equiv="refresh" content="300"; URL="http://www.clowder.io/dashboard">
 {% endif %}
@@ -37,6 +37,19 @@ var DATA = [
 <link rel="stylesheet" type="text/css" href="{% static "css/dashboard.css" %}">
 
 {% endblock %}
+
+{% if public %}
+{% block header %}
+<!-- Static navbar -->
+<nav class="navbar navbar-default" style="bottom: -55px">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/"><img height="47px" src="{% static "img/logo.png" %}" /></a>
+    </div>
+  </div><!--/.container-fluid -->
+</nav>
+{% endblock %}
+{% endif %}
 
 {% block content %}
 
