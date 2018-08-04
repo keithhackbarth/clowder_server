@@ -38,8 +38,9 @@ var DATA = [
 
 {% endblock %}
 
-{% if public %}
+
 {% block header %}
+{% if public %}
 <!-- Static navbar -->
 <nav class="navbar navbar-default" style="bottom: -55px">
   <div class="container">
@@ -48,8 +49,12 @@ var DATA = [
     </div>
   </div><!--/.container-fluid -->
 </nav>
-{% endblock %}
+{% else %}
+  {{block.super}}
 {% endif %}
+
+{% endblock %}
+
 
 {% block content %}
 
