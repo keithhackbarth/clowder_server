@@ -1,0 +1,14 @@
+version: '3'
+services:
+
+  # Basic Development Build
+  clowder:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - "8080:8080"
+      - "8000:8000"
+    container_name: clowder
+    volumes:
+      - ./:/var/app:cached

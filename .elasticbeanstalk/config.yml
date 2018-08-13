@@ -1,0 +1,28 @@
+branch-defaults:
+  master:
+    environment: clowder
+    group_suffix: null
+environment-defaults:
+  clowder:
+    branch: null
+    repository: null
+  clowder-env:
+    branch: null
+    repository: origin
+  clowderenv:
+    branch: null
+    repository: origin
+global:
+  application_name: clowder
+  branch: null
+  default_ec2_keyname: aws-eb
+  default_platform: Docker 17.12.0-ce
+  default_region: us-west-2
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: parking-eb
+  repository: null
+  sc: git
+  workspace_type: Application
