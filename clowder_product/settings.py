@@ -44,7 +44,8 @@ TEMPLATES = [
 ]
 
 
-ALLOWED_HOSTS = []
+# Allow all host headers
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -128,12 +129,9 @@ ADMINS = (
 #EMAIL_HOST_PASSWORD = os.environ.get('MAILGUN_SMTP_PASSWORD', '')
 
 # Heroku Settings
-if os.environ.get('PRODUCTION', False):
+#if os.environ.get('PRODUCTION', False):
 
-    DEBUG = False
+    #DEBUG = False
 
     # Honor the 'X-Forwarded-Proto' header for request.is_secure()
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-    # Allow all host headers
-    ALLOWED_HOSTS = ['*']
+    #SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
