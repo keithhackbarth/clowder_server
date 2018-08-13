@@ -20,4 +20,4 @@ six
 static3
 tzlocal
 waitress
-whitenoise
+whitenoise==3.3.1
