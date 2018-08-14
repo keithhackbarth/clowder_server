@@ -72,7 +72,7 @@ class APIView(CsrfExemptMixin, View):
             status_passing=(status == 1),
             public=public,
         )
-        return HttpResponse(ping, safe=False)
+        return HttpResponse(ping)
 
     def get(self, request):
 
