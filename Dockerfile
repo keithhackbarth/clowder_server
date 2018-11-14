@@ -39,7 +39,7 @@ ADD . /var/app
 ENV        PRODUCTION             True
 ENV        FORCE_SSL_REDIRECT     True
 ENV        UWSGI_NUM_PROCESSES    4
-ENV        UWSGI_NUM_THREADS      1
+ENV        UWSGI_NUM_THREADS      16
 ENV        UWSGI_UID              uwsgi
 ENV        UWSGI_GID              uwsgi
 ENV        UWSGI_LOG_FILE         /var/log/uwsgi/uwsgi.log
