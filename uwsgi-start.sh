@@ -15,4 +15,4 @@ echo $WSGI_PATH
 echo $UWSGI_MODULE
 
 python3 /var/app/manage.py collectstatic --noinput
-uwsgi --ini /var/app/uwsgi.ini --wsgi-file $WSGI_PATH $UWSGI_MODULE --processes $UWSGI_NUM_PROCESSES --threads $UWSGI_NUM_THREADS --uid $UWSGI_UID --gid $UWSGI_GID
+uwsgi --ini /var/app/uwsgi.ini --wsgi-file $WSGI_PATH $UWSGI_MODULE
