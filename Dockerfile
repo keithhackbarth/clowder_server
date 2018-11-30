@@ -2,16 +2,17 @@ FROM       python:3.6.6-stretch
 
 WORKDIR    /var/app
 
-RUN        pip3 install virtualenv
-RUN        virtualenv /var/
-RUN        /var/bin/pip install uwsgi
+RUN        apt-get update -y
+RUN        apt-get -y install binutils libproj-dev gdal-bin
+
+# Requirements txt
+COPY requirements.txt /tmp/
+RUN pip install --requirement /tmp/requirements.txt
 
 RUN        useradd uwsgi -s /bin/false
 RUN        mkdir /var/log/uwsgi
 RUN        chown -R uwsgi:uwsgi /var/log/uwsgi
 
-RUN        apt-get update -y
-RUN        apt-get -y install binutils libproj-dev gdal-bin
 
 # Install Chrome
 RUN apt-get update && apt-get install -y \
@@ -29,10 +30,6 @@ RUN apt-get update && apt-get install -y gconf-service libasound2 libatk1.0-0 li
 # It won't run from the root user.
 RUN groupadd chrome && useradd -g chrome -s /bin/bash -G audio,video chrome \
     && mkdir -p /home/chrome && chown -R chrome:chrome /home/chrome
-
-# Requirements txt
-COPY requirements.txt /tmp/
-RUN /var/bin/pip install --requirement /tmp/requirements.txt
 
 ADD . /var/app
 

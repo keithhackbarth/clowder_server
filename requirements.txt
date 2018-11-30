@@ -21,3 +21,4 @@ static3
 tzlocal
 waitress
 whitenoise==3.3.1
+uwsgi
