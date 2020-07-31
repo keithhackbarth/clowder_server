@@ -9,7 +9,7 @@ from braces.views import CsrfExemptMixin, LoginRequiredMixin
 from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 from django.contrib.auth import decorators
 from django.views.generic import TemplateView, View
-from ipware.ip import get_real_ip
+from ipware.ip import get_client_ip
 
 from clowder_account.models import Company
 from clowder_server.emailer import send_alert
@@ -34,7 +34,7 @@ class APIView(CsrfExemptMixin, View):
             company_id = 86
         else:
             company_id = Company.objects.get(public_key=api_key).id
-        ip = get_real_ip(request) or '127.0.0.1'
+        ip = get_client_ip(request) or '127.0.0.1'
 
         if not name:
             return HttpResponse('name needed')
